@@ -5,14 +5,12 @@ import Discipline.CineHub.response.expert.ExpertResponse;
 import Discipline.CineHub.service.expert.IExpertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,4 +30,10 @@ public class ExpertController {
     ExpertResponse response = new ExpertResponse(savedExpert.getId(), savedExpert.getExpertType(), savedExpert.getSummary());
     return ResponseEntity.ok(response);
   }
+
+  // 전문가의 모든 타입 가져오는 기능
+  @GetMapping("/get-types")
+  public List<String> getExpertTypes() {return expertService.getAllExpertTypes();}
+
+  
 }

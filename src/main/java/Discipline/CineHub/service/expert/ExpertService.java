@@ -10,6 +10,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +29,10 @@ public class ExpertService implements IExpertService {
     }
 
     return expertRepository.save(expert);
+  }
+
+  @Override
+  public List<String> getAllExpertTypes() {
+    return expertRepository.findDistinctExpertTypes();
   }
 }
