@@ -2,6 +2,7 @@ package Discipline.CineHub.controller.expert;
 
 import Discipline.CineHub.entity.expert.BookedExpert;
 import Discipline.CineHub.entity.expert.Expert;
+import Discipline.CineHub.exception.ResourceNotFoundException;
 import Discipline.CineHub.response.expert.BookingResponse;
 import Discipline.CineHub.response.expert.ExpertResponse;
 import Discipline.CineHub.service.expert.BookingService;
@@ -19,6 +20,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -84,6 +86,16 @@ public class ExpertController {
     theExpert.setThumbnail(photoBlob);
     ExpertResponse expertResponse = getExpertResponse(theExpert);
     return ResponseEntity.ok(expertResponse);
+  }
+
+  // 전문가 찾기 expertId를 이용하여
+  @GetMapping("/expert-search/{expertId}")
+  public ResponseEntity<Optional<ExpertResponse>> getExpertById(@PathVariable Long expertId){
+    Optional<Expert> theExpert = expertService.getExpertById(expertId);
+    return theExpert.map(expert -> {
+      ExpertResponse expertResponse = getExpertResponse(expert);
+      return ResponseEntity.ok(Optional.of(expertResponse));
+    }).orElseThrow(() -> new ResourceNotFoundException("전문가를 찾을 수 없습니다."));
   }
 
   // 전문가 상태 가져오기
