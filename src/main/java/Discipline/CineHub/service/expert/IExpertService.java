@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface IExpertService {
   Expert addNewExpert(String expertType, String summary, MultipartFile photo) throws IOException, SQLException;
@@ -19,4 +20,6 @@ public interface IExpertService {
   void deleteExpert(Long expertId);
 
   Expert updateExpert(long expertId, String expertType, String summary, byte[] photoBytes);
+
+  Optional<Expert> getExpertById(Long expertId);
 }

@@ -82,5 +82,10 @@ public class ExpertService implements IExpertService {
     return expertRepository.save(expert);
   }
 
+  @Override
+  public Optional<Expert> getExpertById(Long expertId) {
+    return Optional.of(expertRepository.findById(expertId).get());
+  }
+
 
 }
