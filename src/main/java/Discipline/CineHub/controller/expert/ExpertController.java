@@ -8,6 +8,7 @@ import Discipline.CineHub.service.expert.BookingService;
 import Discipline.CineHub.service.expert.IExpertService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,6 +59,13 @@ public class ExpertController {
       }
     }
     return ResponseEntity.ok(expertResponses);
+  }
+
+  // expertId로 전문가 삭제
+  @DeleteMapping("/delete/{expertId}")
+  public ResponseEntity<Void> deleteExpert(@PathVariable Long expertId){
+    expertService.deleteExpert(expertId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   // 전문가 상태 가져오기

@@ -56,5 +56,13 @@ public class ExpertService implements IExpertService {
     return null;
   }
 
+  @Override
+  public void deleteExpert(Long expertId) {
+    Optional<Expert> theExpert = expertRepository.findById(expertId);
+    if(theExpert.isPresent()){
+      expertRepository.deleteById(expertId);
+    }
+  }
+
 
 }
