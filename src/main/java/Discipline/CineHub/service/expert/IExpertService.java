@@ -15,4 +15,6 @@ public interface IExpertService {
   List<Expert> getAllExperts();
 
   byte[] getExpertPhotoByExpertId(Long expertId) throws SQLException;
+
+  void deleteExpert(Long expertId);
 }
