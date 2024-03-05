@@ -12,6 +12,7 @@ import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,6 +86,11 @@ public class ExpertService implements IExpertService {
   @Override
   public Optional<Expert> getExpertById(Long expertId) {
     return Optional.of(expertRepository.findById(expertId).get());
+  }
+
+  @Override
+  public List<Expert> getAvailableExperts(LocalDate checkInDate, LocalDate checkOutDate, String expertType) {
+    return expertRepository.findAvailableExpertsByDatesAndType(checkInDate, checkOutDate, expertType);
   }
 
 

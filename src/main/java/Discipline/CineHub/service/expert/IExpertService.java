@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +23,6 @@ public interface IExpertService {
   Expert updateExpert(long expertId, String expertType, String summary, byte[] photoBytes);
 
   Optional<Expert> getExpertById(Long expertId);
+
+  List<Expert> getAvailableExperts(LocalDate checkInDate, LocalDate checkOutDate, String expertType);
 }

@@ -9,6 +9,7 @@ import Discipline.CineHub.service.expert.BookingService;
 import Discipline.CineHub.service.expert.IExpertService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -121,6 +123,31 @@ public class ExpertController {
     return new ExpertResponse(
             expert.getId(), expert.getExpertType(), expert.getSummary(),
             photoBytes, expert.isBooked(), bookingInfo);
+  }
+
+  // 가능한 전문가 정보 확인
+  @GetMapping("/available-experts")
+  public ResponseEntity<List<ExpertResponse>> getAvailableExperts(
+          @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkInDate,
+          @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkOutDate,
+          @RequestParam("expertType") String expertType
+          ) throws SQLException {
+    List<Expert> availableExperts = expertService.getAvailableExperts(checkInDate, checkOutDate, expertType);
+    List<ExpertResponse> expertResponses = new ArrayList<>();
+    for(Expert expert : availableExperts){
+      byte[] photoBytes = expertService.getExpertPhotoByExpertId(expert.getId());
+      if(photoBytes != null && photoBytes.length > 0){
+        String photoBase64 = Base64.encodeBase64String(photoBytes);
+        ExpertResponse expertResponse = getExpertResponse(expert);
+        expertResponse.setPhoto(photoBase64);
+        expertResponses.add(expertResponse);
+      }
+    }
+    if (expertResponses.isEmpty()){
+      return ResponseEntity.noContent().build();
+    }else {
+      return ResponseEntity.ok(expertResponses);
+    }
   }
 
   // expertId로 예약된 전문가들 가져오기
