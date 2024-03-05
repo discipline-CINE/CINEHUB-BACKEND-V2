@@ -1,6 +1,7 @@
 package Discipline.CineHub.service.expert;
 
 import Discipline.CineHub.entity.expert.Expert;
+import Discipline.CineHub.exception.ResourceNotFoundException;
 import Discipline.CineHub.repository.expert.ExpertRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,4 +37,24 @@ public class ExpertService implements IExpertService {
   public List<String> getAllExpertTypes() {
     return expertRepository.findDistinctExpertTypes();
   }
+
+  @Override
+  public List<Expert> getAllExperts() {
+    return expertRepository.findAll();
+  }
+
+  @Override
+  public byte[] getExpertPhotoByExpertId(Long expertId) throws SQLException {
+    Optional<Expert> theExpert = expertRepository.findById(expertId);
+    if(theExpert.isEmpty()){
+      throw new ResourceNotFoundException("전문가를 찾지 못하였습니다.");
+    }
+    Blob photoBlob = theExpert.get().getThumbnail();
+    if(photoBlob != null){
+      return photoBlob.getBytes(1,(int) photoBlob.length());
+    }
+    return null;
+  }
+
+
 }

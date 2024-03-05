@@ -10,5 +10,9 @@ import java.util.List;
 public interface IExpertService {
   Expert addNewExpert(String expertType, String summary, MultipartFile photo) throws IOException, SQLException;
 
-  public List<String> getAllExpertTypes();
+  List<String> getAllExpertTypes();
+
+  List<Expert> getAllExperts();
+
+  byte[] getExpertPhotoByExpertId(Long expertId) throws SQLException;
 }
