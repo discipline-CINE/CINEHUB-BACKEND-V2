@@ -17,4 +17,6 @@ public interface IExpertService {
   byte[] getExpertPhotoByExpertId(Long expertId) throws SQLException;
 
   void deleteExpert(Long expertId);
+
+  Expert updateExpert(long expertId, String expertType, String summary, byte[] photoBytes);
 }

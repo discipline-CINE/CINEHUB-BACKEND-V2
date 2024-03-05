@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -61,11 +62,28 @@ public class ExpertController {
     return ResponseEntity.ok(expertResponses);
   }
 
-  // expertId로 전문가 삭제
+  // 전문가 삭제 expertId를 이용
   @DeleteMapping("/delete/{expertId}")
   public ResponseEntity<Void> deleteExpert(@PathVariable Long expertId){
     expertService.deleteExpert(expertId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  // 전문가 업데이트
+  @PutMapping("/update/{expertId}")
+  public ResponseEntity<ExpertResponse> updateExpert(
+          @PathVariable Long expertId,
+          @RequestParam(required = false) String expertType,
+          @RequestParam(required = false) String summary,
+          @RequestParam(required = false) MultipartFile photo
+  ) throws SQLException, IOException {
+    // photyoBytes가 존재한다면 RequestParam에서 받은 정보를, 없다면 기존의 내용을 가져온다
+    byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes() : expertService.getExpertPhotoByExpertId(expertId);
+    Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
+    Expert theExpert = expertService.updateExpert(expertId, expertType, summary, photoBytes);
+    theExpert.setThumbnail(photoBlob);
+    ExpertResponse expertResponse = getExpertResponse(theExpert);
+    return ResponseEntity.ok(expertResponse);
   }
 
   // 전문가 상태 가져오기

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -62,6 +63,23 @@ public class ExpertService implements IExpertService {
     if(theExpert.isPresent()){
       expertRepository.deleteById(expertId);
     }
+  }
+
+  @Override
+  public Expert updateExpert(long expertId, String expertType, String summary, byte[] photoBytes) {
+    Expert expert = expertRepository.findById(expertId).get();
+    if(expertType != null) expert.setExpertType(expertType);
+    if(summary != null) expert.setSummary(summary);
+    if(photoBytes != null && photoBytes.length > 0){
+      try{
+        expert.setThumbnail(new SerialBlob(photoBytes));
+      } catch (SerialException e) {
+        throw new RuntimeException(e);
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return expertRepository.save(expert);
   }
 
 
