@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.service.file;
+package Discipline.CineHub.service.file;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.dto;
+package Discipline.CineHub.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

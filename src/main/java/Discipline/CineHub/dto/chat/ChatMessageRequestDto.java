@@ -1,6 +1,6 @@
-package com.Discipline.cinehub.dto.chat;
+package Discipline.CineHub.dto.chat;
 
-import com.Discipline.cinehub.domain.ChatMessage;
+import Discipline.CineHub.domain.ChatMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

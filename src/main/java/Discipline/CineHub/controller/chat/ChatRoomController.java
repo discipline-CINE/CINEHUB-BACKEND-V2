@@ -1,15 +1,15 @@
-package com.Discipline.cinehub.controller.chat;
+package Discipline.CineHub.controller.chat;
 
-import com.Discipline.cinehub.domain.ChatRoom;
-import com.Discipline.cinehub.dto.chat.ChatMessageResponseDto;
-import com.Discipline.cinehub.dto.chat.ChatRoomRequestDto;
-import com.Discipline.cinehub.dto.chat.ChatRoomResponseDto;
-import com.Discipline.cinehub.dto.chat.ChatRoomWithMessagesDto;
-import com.Discipline.cinehub.entity.UserEntity;
-import com.Discipline.cinehub.repository.chat.ChatRoomRepository;
-import com.Discipline.cinehub.repository.UserRepository;
-import com.Discipline.cinehub.service.chat.ChatMessageService;
-import com.Discipline.cinehub.service.chat.ChatRoomService;
+import Discipline.CineHub.domain.ChatRoom;
+import Discipline.CineHub.dto.chat.ChatMessageResponseDto;
+import Discipline.CineHub.dto.chat.ChatRoomRequestDto;
+import Discipline.CineHub.dto.chat.ChatRoomResponseDto;
+import Discipline.CineHub.dto.chat.ChatRoomWithMessagesDto;
+import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.repository.chat.ChatRoomRepository;
+import Discipline.CineHub.repository.UserRepository;
+import Discipline.CineHub.service.chat.ChatMessageService;
+import Discipline.CineHub.service.chat.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.service.login;
+package Discipline.CineHub.service.login;
 
 import java.util.HashMap;
 import java.util.Map;

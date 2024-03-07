@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.service.redis;
+package Discipline.CineHub.service.redis;
 
 import groovy.util.logging.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

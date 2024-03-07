@@ -11,7 +11,7 @@
 //    인증 성공 시 거치지 않음
 
 
-package com.Discipline.cinehub.security.authentication;
+package Discipline.CineHub.security.authentication;
 
 import lombok.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;

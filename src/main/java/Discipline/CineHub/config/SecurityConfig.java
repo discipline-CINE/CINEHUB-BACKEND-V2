@@ -1,10 +1,10 @@
-package com.Discipline.cinehub.config;
+package Discipline.CineHub.config;
 
-import com.Discipline.cinehub.security.authentication.CustomAuthenticationFailureHandler;
-import com.Discipline.cinehub.security.authentication.CustomAuthenticationFilter;
-import com.Discipline.cinehub.security.authentication.CustomAuthenticationSuccessHandler;
-import com.Discipline.cinehub.security.entrypoint.CustomLoginAuthenticationEntryPoint;
-import com.Discipline.cinehub.security.exception.CustomAccessDeniedHandler;
+import Discipline.CineHub.security.authentication.CustomAuthenticationFailureHandler;
+import Discipline.CineHub.security.authentication.CustomAuthenticationFilter;
+import Discipline.CineHub.security.authentication.CustomAuthenticationSuccessHandler;
+import Discipline.CineHub.security.entrypoint.CustomLoginAuthenticationEntryPoint;
+import Discipline.CineHub.security.exception.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

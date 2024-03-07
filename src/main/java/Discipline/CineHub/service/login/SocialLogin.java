@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.service.login;
+package Discipline.CineHub.service.login;
 
 public interface SocialLogin {
     String getProvider(); // 소셜 로그인 provider 정보

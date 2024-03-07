@@ -1,7 +1,7 @@
-package com.Discipline.cinehub.repository.chat;
+package Discipline.CineHub.repository.chat;
 
-import com.Discipline.cinehub.domain.ChatRoom;
-import com.Discipline.cinehub.entity.UserEntity;
+import Discipline.CineHub.domain.ChatRoom;
+import Discipline.CineHub.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.exception;
+package Discipline.CineHub.exception;
 
 import lombok.Getter;
 

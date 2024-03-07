@@ -1,7 +1,7 @@
-package com.Discipline.cinehub.domain;
+package Discipline.CineHub.domain;
 
-import com.Discipline.cinehub.entity.BaseTimeEntity;
-import com.Discipline.cinehub.entity.UserEntity;
+import Discipline.CineHub.entity.BaseTimeEntity;
+import Discipline.CineHub.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

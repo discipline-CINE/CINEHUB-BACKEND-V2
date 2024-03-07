@@ -1,7 +1,7 @@
-package com.Discipline.cinehub.service.login;
+package Discipline.CineHub.service.login;
 
-import com.Discipline.cinehub.entity.UserEntity;
-import com.Discipline.cinehub.repository.UserRepository;
+import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,15 +1,15 @@
-package com.Discipline.cinehub.service.user;
+package Discipline.CineHub.service.user;
 
-import com.Discipline.cinehub.entity.AuthorityEntity;
-import com.Discipline.cinehub.entity.UserEntity;
-import com.Discipline.cinehub.exception.BusinessLogicException;
-import com.Discipline.cinehub.model.EmailVerificationResult;
-import com.Discipline.cinehub.repository.UserRepository;
-import com.Discipline.cinehub.dto.UserDto;
-import com.Discipline.cinehub.exception.ExceptionCode;
+import Discipline.CineHub.entity.AuthorityEntity;
+import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.exception.BusinessLogicException;
+import Discipline.CineHub.model.EmailVerificationResult;
+import Discipline.CineHub.repository.UserRepository;
+import Discipline.CineHub.dto.UserDto;
+import Discipline.CineHub.exception.ExceptionCode;
 
-import com.Discipline.cinehub.service.authentication.MailService;
-import com.Discipline.cinehub.service.redis.RedisService;
+import Discipline.CineHub.service.authentication.MailService;
+import Discipline.CineHub.service.redis.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

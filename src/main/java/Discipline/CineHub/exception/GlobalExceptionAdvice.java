@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.exception;
+package Discipline.CineHub.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

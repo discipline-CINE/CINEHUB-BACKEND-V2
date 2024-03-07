@@ -1,10 +1,10 @@
-package com.Discipline.cinehub.dto.chat;
+package Discipline.CineHub.dto.chat;
 
 import java.util.List;
 
-import com.Discipline.cinehub.domain.ChatRoom;
+import Discipline.CineHub.domain.ChatRoom;
 
-import com.Discipline.cinehub.dto.chat.ChatMessageResponseDto;
+import Discipline.CineHub.dto.chat.ChatMessageResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

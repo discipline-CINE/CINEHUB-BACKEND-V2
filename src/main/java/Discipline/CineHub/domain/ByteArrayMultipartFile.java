@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.domain;
+package Discipline.CineHub.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 

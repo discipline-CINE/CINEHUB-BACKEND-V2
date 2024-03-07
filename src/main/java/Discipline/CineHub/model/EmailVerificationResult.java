@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.model;
+package Discipline.CineHub.model;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.user;
+package Discipline.CineHub.user;
 
 import lombok.Getter;
 

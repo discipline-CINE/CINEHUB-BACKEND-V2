@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.config;
+package Discipline.CineHub.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

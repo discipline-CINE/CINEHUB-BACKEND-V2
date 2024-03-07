@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.security.exception;
+package Discipline.CineHub.security.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

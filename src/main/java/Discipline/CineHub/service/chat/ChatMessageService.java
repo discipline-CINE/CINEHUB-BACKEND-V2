@@ -1,10 +1,10 @@
-package com.Discipline.cinehub.service.chat;
+package Discipline.CineHub.service.chat;
 
-import com.Discipline.cinehub.dto.chat.ChatMessageResponseDto;
-import com.Discipline.cinehub.repository.UserRepository;
-import com.Discipline.cinehub.domain.ChatMessage;
-import com.Discipline.cinehub.dto.chat.ChatMessageRequestDto;
-import com.Discipline.cinehub.repository.chat.ChatMessageRepository;
+import Discipline.CineHub.dto.chat.ChatMessageResponseDto;
+import Discipline.CineHub.repository.UserRepository;
+import Discipline.CineHub.domain.ChatMessage;
+import Discipline.CineHub.dto.chat.ChatMessageRequestDto;
+import Discipline.CineHub.repository.chat.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

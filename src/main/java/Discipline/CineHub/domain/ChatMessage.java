@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.domain;
+package Discipline.CineHub.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

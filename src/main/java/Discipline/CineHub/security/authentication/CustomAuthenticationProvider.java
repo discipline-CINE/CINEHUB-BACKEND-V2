@@ -1,6 +1,6 @@
-package com.Discipline.cinehub.security.authentication;
+package Discipline.CineHub.security.authentication;
 
-import com.Discipline.cinehub.entity.UserEntity;
+import Discipline.CineHub.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.config;
+package Discipline.CineHub.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;

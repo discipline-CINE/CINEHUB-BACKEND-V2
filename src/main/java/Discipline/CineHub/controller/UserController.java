@@ -1,11 +1,11 @@
-package com.Discipline.cinehub.controller;
+package Discipline.CineHub.controller;
 
-import com.Discipline.cinehub.annotation.CustomEmail;
-import com.Discipline.cinehub.dto.SingleResponseDto;
-import com.Discipline.cinehub.dto.UserDto;
-import com.Discipline.cinehub.entity.UserEntity;
-import com.Discipline.cinehub.model.EmailVerificationResult;
-import com.Discipline.cinehub.service.user.UserService;
+import Discipline.CineHub.annotation.CustomEmail;
+import Discipline.CineHub.dto.SingleResponseDto;
+import Discipline.CineHub.dto.UserDto;
+import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.model.EmailVerificationResult;
+import Discipline.CineHub.service.user.UserService;
 import jakarta.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;

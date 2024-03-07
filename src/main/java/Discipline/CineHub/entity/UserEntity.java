@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.entity;
+package Discipline.CineHub.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.annotation;
+package Discipline.CineHub.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

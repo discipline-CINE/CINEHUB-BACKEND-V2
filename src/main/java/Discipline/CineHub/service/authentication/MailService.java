@@ -1,7 +1,7 @@
-package com.Discipline.cinehub.service.authentication;
+package Discipline.CineHub.service.authentication;
 
-import com.Discipline.cinehub.exception.ExceptionCode;
-import com.Discipline.cinehub.exception.BusinessLogicException;
+import Discipline.CineHub.exception.ExceptionCode;
+import Discipline.CineHub.exception.BusinessLogicException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;

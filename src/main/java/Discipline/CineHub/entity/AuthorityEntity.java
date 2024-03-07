@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.entity;
+package Discipline.CineHub.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

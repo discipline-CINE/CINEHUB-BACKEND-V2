@@ -1,9 +1,9 @@
 // Handler를 통해 WebSocket를 활성화하기 위한 Config
 
-package com.Discipline.cinehub.config.websocket;
+package Discipline.CineHub.config.websocket;
 
-import com.Discipline.cinehub.config.websocket.CustomHandshakeInterceptor;
-import com.Discipline.cinehub.config.websocket.SocketHandler;
+import Discipline.CineHub.config.websocket.CustomHandshakeInterceptor;
+import Discipline.CineHub.config.websocket.SocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

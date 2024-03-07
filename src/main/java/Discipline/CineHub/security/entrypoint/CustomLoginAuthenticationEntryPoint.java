@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.security.entrypoint;
+package Discipline.CineHub.security.entrypoint;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

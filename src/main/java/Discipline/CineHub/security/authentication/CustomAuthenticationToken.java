@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.security.authentication;
+package Discipline.CineHub.security.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

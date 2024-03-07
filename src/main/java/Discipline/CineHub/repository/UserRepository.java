@@ -1,7 +1,7 @@
-package com.Discipline.cinehub.repository;
+package Discipline.CineHub.repository;
 
-import com.Discipline.cinehub.dto.UserDto;
-import com.Discipline.cinehub.entity.UserEntity;
+import Discipline.CineHub.dto.UserDto;
+import Discipline.CineHub.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

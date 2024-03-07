@@ -1,6 +1,6 @@
-package com.Discipline.cinehub.repository.chat;
+package Discipline.CineHub.repository.chat;
 
-import com.Discipline.cinehub.domain.ChatMessage;
+import Discipline.CineHub.domain.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

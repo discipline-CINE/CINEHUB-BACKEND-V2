@@ -1,8 +1,8 @@
 // 채팅방 조회 response에 사용하는 DTO
 
-package com.Discipline.cinehub.dto.chat;
+package Discipline.CineHub.dto.chat;
 
-import com.Discipline.cinehub.domain.ChatRoom;
+import Discipline.CineHub.domain.ChatRoom;
 import lombok.Getter;
 
 @Getter

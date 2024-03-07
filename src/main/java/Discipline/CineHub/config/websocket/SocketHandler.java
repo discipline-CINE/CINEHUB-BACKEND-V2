@@ -1,11 +1,11 @@
 // 메세지 핸들링
 
-package com.Discipline.cinehub.config.websocket;
+package Discipline.CineHub.config.websocket;
 
-import com.Discipline.cinehub.domain.ByteArrayMultipartFile;
-import com.Discipline.cinehub.dto.chat.ChatMessageRequestDto;
-import com.Discipline.cinehub.service.file.AwsS3Service;
-import com.Discipline.cinehub.service.chat.ChatMessageService;
+import Discipline.CineHub.domain.ByteArrayMultipartFile;
+import Discipline.CineHub.dto.chat.ChatMessageRequestDto;
+import Discipline.CineHub.service.file.AwsS3Service;
+import Discipline.CineHub.service.chat.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;

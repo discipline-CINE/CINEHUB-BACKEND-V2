@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.security.authentication;
+package Discipline.CineHub.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

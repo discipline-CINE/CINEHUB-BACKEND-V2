@@ -3,7 +3,7 @@
 // beforeHandshake는 Client에서 연결 요청이 들어오면 handshake에서 호출
 // CustomHandshakeInterceptor는 http에 존재하는 session을 WebSocket session으로 등록
 
-package com.Discipline.cinehub.config.websocket;
+package Discipline.CineHub.config.websocket;
 
 
 import jakarta.servlet.http.HttpServletRequest;

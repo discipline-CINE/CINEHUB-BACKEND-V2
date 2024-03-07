@@ -1,4 +1,4 @@
-package com.Discipline.cinehub.dto;
+package Discipline.CineHub.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
