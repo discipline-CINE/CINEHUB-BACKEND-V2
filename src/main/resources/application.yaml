@@ -16,7 +16,7 @@ spring:
     port: 465
     # git 올릴시 주석 처리
     username: anjdal713@naver.com
-    password: # key
+    password: #
     properties:
       mail:
         smtp:
@@ -44,15 +44,15 @@ spring:
         registration:
           naver:
             # git 올릴 시 주석 처리
-            client-id: # key
-            client-secret: # key
+            client-id: mXYRT5hQ2NwMClYWZnJ_
+            client-secret: Maj7ERz83n
             redirect-uri: http://localhost:8080/user/login
             authorization-grant-type: authorization_code
             scope: email,nickname
             client-name: Naver
           kakao:
             # git 올릴 시 주석 처리
-            client-id: # key
+            client-id: 4ae0b212e7d722dac59d8625ca7623a5
             scope: profile_nickname, account_email
             client-name: Kakao
             authorization-grant-type: authorization_code
@@ -94,5 +94,5 @@ aws:
     auto: false
   credentials:
     # git 올릴 시 주석 처리
-    accessKey: # key
-    secretKey: # key
+    accessKey: AKIA2UC3DM7LBQBK2FWV
+    secretKey: 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
