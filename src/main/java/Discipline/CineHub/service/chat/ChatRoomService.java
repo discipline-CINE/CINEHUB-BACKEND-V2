@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class ChatRoomService {
         return chatRoomRepository.findAll().stream()
                 .map(chatRoom -> {ChatMessage lastMessage = chatMessageRepository.findTopByRoomNumberOrderByCreatedTimeDesc(chatRoom.getRoomNumber());
                     if (lastMessage!=null) {
-                        return new ChatRoomResponseDto(chatRoom, lastMessage.getMsg(), lastMessage.getCreatedTime());
+                        return new ChatRoomResponseDto(chatRoom, lastMessage.getMsg(), lastMessage.getCreatedTime().format(DateTimeFormatter.ISO_DATE_TIME));
                     }
                     else {
                         return new ChatRoomResponseDto(chatRoom, "이 채팅방에 아직 메시지가 없습니다","00:00:00");

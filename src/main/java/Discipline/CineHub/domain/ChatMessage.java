@@ -1,28 +1,32 @@
 package Discipline.CineHub.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
+@Table(name = "chat_message")
 @Entity
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     private String userName;
     private String msg;
     private String imageUrl;
+
+    @Column(nullable = false)
     private int roomNumber;
-    private String createdTime;
+
+    @CreationTimestamp
+    private LocalDateTime createdTime;
 
     @Builder
     public ChatMessage(String msg, String imageUrl, int roomNumber, String userName) {
@@ -30,6 +34,5 @@ public class ChatMessage {
         this.imageUrl = imageUrl;
         this.roomNumber = roomNumber;
         this.userName = userName;
-        this.createdTime = ZonedDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
     }
 }

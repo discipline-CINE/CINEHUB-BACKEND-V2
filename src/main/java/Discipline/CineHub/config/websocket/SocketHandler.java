@@ -6,10 +6,13 @@ import Discipline.CineHub.domain.ByteArrayMultipartFile;
 import Discipline.CineHub.dto.chat.ChatMessageRequestDto;
 import Discipline.CineHub.service.file.AwsS3Service;
 import Discipline.CineHub.service.chat.ChatMessageService;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
@@ -138,7 +141,7 @@ public class SocketHandler extends TextWebSocketHandler {
         super.afterConnectionEstablished(session);
         boolean flag = false;
         String url = session.getUri().toString();
-        String roomNumber = url.split("/chat/")[1];
+        String roomNumber = url.split("/chatting/")[1];
         int idx = rls.size(); // 방의 사이즈를 조사한다.
         if (rls.size() > 0) {
             for (int i = 0; i < rls.size(); i++) {
@@ -185,7 +188,7 @@ public class SocketHandler extends TextWebSocketHandler {
         JSONObject obj = null;
         try {
             obj = (JSONObject) parser.parse(jsonStr);
-        } catch (net.minidev.json.parser.ParseException e) {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         return obj;

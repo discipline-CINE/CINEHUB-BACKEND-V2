@@ -28,9 +28,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketHandler, "/wss/chat")
+        registry.addHandler(socketHandler, "/ws/chatting/{roomNumber}")
                 .addInterceptors(new HttpSessionHandshakeInterceptor(), new CustomHandshakeInterceptor())
-                .setAllowedOrigins("http://localhost:8080/api/chat"); // localhost, 나중에 배포 시 변경
+                .setAllowedOrigins("*"); // localhost, 나중에 배포 시 변경
     }
     // CORS 설정 때문에 origin에서 403 error 발생시
     // String[] origins = {"https://www.url1.com", }등 여러 origin을 setAllowedOrigins에 대입해도 됨
