@@ -32,10 +32,10 @@ public class ChatMessageRequestDto {
     // 객체 생성
     public ChatMessage toEntity() {
         return ChatMessage.builder()
-                .userName(userName)
-                .msg(msg)
-                .imageUrl(imageUrl)
-                .roomNumber(roomNumber)
+                .userName(this.userName)
+                .msg(this.msg)
+                .imageUrl(this.imageUrl)
+                .roomNumber(this.roomNumber)
                 .build();
     }
 }

@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ChatRoomRequestDto {
-    private String nickname;
+    private String username;
 
     @Builder
-    public ChatRoomRequestDto(String nickname) {
+    public ChatRoomRequestDto(String username) {
 
-        this.nickname = nickname;
+        this.username = username;
     }
 }

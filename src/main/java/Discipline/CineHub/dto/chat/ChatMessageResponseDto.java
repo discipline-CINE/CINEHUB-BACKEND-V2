@@ -3,6 +3,8 @@ package Discipline.CineHub.dto.chat;
 import Discipline.CineHub.domain.ChatMessage;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 public class ChatMessageResponseDto {
     private String userName;
@@ -14,6 +16,6 @@ public class ChatMessageResponseDto {
         this.userName = chatMessage.getUserName();
         this.msg = chatMessage.getMsg();
         this.imageUrl = chatMessage.getImageUrl();
-        this.createdTime = chatMessage.getCreatedTime();
+        this.createdTime = chatMessage.getCreatedTime().format(DateTimeFormatter.ISO_DATE_TIME);
     }
 }

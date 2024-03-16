@@ -42,7 +42,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-<<<<<<< Updated upstream
     CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
@@ -53,18 +52,6 @@ public class SecurityConfig {
             return config;
         };
     }
-=======
-  CorsConfigurationSource corsConfigurationSource() {
-    return request -> {
-      CorsConfiguration config = new CorsConfiguration();
-      config.setAllowedHeaders(Collections.singletonList("*"));
-      config.setAllowedMethods(Collections.singletonList("*"));
-      config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
-      config.setAllowCredentials(true);
-      return config;
-    };
-  }
->>>>>>> Stashed changes
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -75,6 +62,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/**").authenticated()
                         .requestMatchers("/api/signup/**").permitAll()
                         .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/chatting/**").permitAll()
+                        .requestMatchers("/chat/**").permitAll()
                         .requestMatchers("/api/emails").permitAll() // 로그인 이후에 이메일 인증하기로 하면, authenticated
                         .requestMatchers("/h2-console/**").permitAll() // h2-console 모두에게 열려있음 보안이슈 가능성 O
                         .anyRequest().permitAll()) // 추후 Role 별 페이지 추가되면 권한 변경

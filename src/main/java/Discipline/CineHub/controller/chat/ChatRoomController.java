@@ -36,7 +36,7 @@ public class ChatRoomController {
         UserEntity member = userRepository
                 .findByUsername(loginMemberId)
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
-        UserEntity other = userRepository.findByUsername(chatRoomRequestDto.getNickname())
+        UserEntity other = userRepository.findByUsername(chatRoomRequestDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("채팅 상대방 정보가 없습니다"));
         Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByMemberAndOther(member, other);
         //고유한 값이어야 함
