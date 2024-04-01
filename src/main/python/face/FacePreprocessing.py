@@ -18,6 +18,7 @@ models = [
 
 metrics = ["cosine", "euclidean", "euclidean_l2"]
 
+# 추후에 DB에 맞게 설정 변경 - 현재 로컬 데이터베이스
 current_path = os.path.dirname(os.path.realpath(__file__))
 images_folder_path = os.path.join(current_path, '../../resources/images/face')
 input_img_path = os.path.join(images_folder_path, '../img4.jpg')

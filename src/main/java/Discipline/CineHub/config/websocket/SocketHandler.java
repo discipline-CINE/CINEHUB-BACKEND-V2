@@ -6,8 +6,6 @@ import Discipline.CineHub.domain.ByteArrayMultipartFile;
 import Discipline.CineHub.dto.chat.ChatMessageRequestDto;
 import Discipline.CineHub.service.file.AwsS3Service;
 import Discipline.CineHub.service.chat.ChatMessageService;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
