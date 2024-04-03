@@ -6,18 +6,20 @@ import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.GenderType;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
+import Discipline.CineHub.service.actor.StorageService;
 import Discipline.CineHub.service.actor.ThumbnailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +28,18 @@ import java.util.List;
 @RequestMapping("/user")
 public class ActorController {
   private final ActorService actorService;
-  private final ThumbnailService thumbnailService;
+  private StorageService service;
+
+  @Autowired
+  public ActorController(ActorService actorService, StorageService service) {
+    this.actorService = actorService;
+    this.service = service;
+  }
+
+//  @PostMapping("/upload")
+//  public ResponseEntity<URL> uploadFile(@RequestParam(value = "file") MultipartFile file) {
+//    return new ResponseEntity<>(service.uploadFile(file), HttpStatus.OK);
+//  }
 
   //배우 삭제
   @PostMapping("/delete-actor")
@@ -34,17 +47,13 @@ public class ActorController {
     actorService.deleteById(id);
   }
 
-  //업로드 된 이미지가 저장될 장소 application.yaml에서 설정 가능
-  @Value("${image.path}")
-  private String uploadDir;
-
   @GetMapping("/all-actors")
   public List<Actor> findAllActors(){
     return actorService.findAllActors();
   }
 
-  @PostMapping("/actor")
-  public void saveFormRequests(ActorRequest actorRequest) throws IOException {
+  @PostMapping("/upload")
+  public URL saveFormRequests(ActorRequest actorRequest) throws IOException{
     String name = actorRequest.getName();
     GenderType gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
@@ -53,6 +62,10 @@ public class ActorController {
     String specialty = actorRequest.getSpecialty();
     String career = actorRequest.getCareer();
     String content = actorRequest.getContent();
+    MultipartFile file = actorRequest.getFile();
+
+    URL thumbnailId = service.uploadFile(file);
+
     ActorDto actorDto = ActorDto.builder()
             .name(name)
             .gender(gender)
@@ -62,22 +75,9 @@ public class ActorController {
             .specialty(specialty)
             .career(career)
             .content(content)
+            .thumbnailId(thumbnailId)
             .build();
 
-    if(actorRequest.getFile() != null){
-      MultipartFile file = actorRequest.getFile();
-      String fullPath = uploadDir + file.getOriginalFilename();
-      file.transferTo(new File(fullPath));
-      log.info("file.getOriginalFilename = {}", file.getOriginalFilename());
-      log.info("fullPath = {}", fullPath);
-
-      ThumbnailDto thumbnailDto = ThumbnailDto.builder()
-              .originFileName(file.getOriginalFilename())
-              .fullPath(uploadDir + file.getOriginalFilename())
-              .build();
-      Long savedFileId = thumbnailService.save(thumbnailDto);
-      actorDto.setThumbnailId(savedFileId);
-    }
-    actorService.save(actorDto);
+    return thumbnailId;
   }
 }
