@@ -77,7 +77,7 @@ public class ActorController {
             .content(content)
             .thumbnailId(thumbnailId)
             .build();
-
+    actorService.save(actorDto);
     return thumbnailId;
   }
 }
