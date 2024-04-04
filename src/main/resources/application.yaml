@@ -72,7 +72,7 @@ spring:
 
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     open-in-view: false
     show-sql: true
     properties:
@@ -87,12 +87,12 @@ spring:
 
 aws:
   s3:
-    bucketName: disciplinecinehub
-    bucket.url: https://s3.ap-northeast-2.amazonaws.com/disciplinecinehub
+    bucketName: discipline-actor
+    bucket.url: https://s3.ap-northeast-2.amazonaws.com/discipline-actor
     region: ap-northeast-2
   stack:
     auto: false
   credentials:
     # git 올릴 시 주석 처리
-    accessKey: AKIA2UC3DM7LBQBK2FWV
-    secretKey: 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
+    accessKey: AKIAVEEOCLJLOSIAOIHY
+    secretKey: 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

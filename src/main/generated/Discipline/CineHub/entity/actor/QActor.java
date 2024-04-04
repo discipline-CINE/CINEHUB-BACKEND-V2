@@ -20,8 +20,6 @@ public class QActor extends EntityPathBase<Actor> {
 
     public static final QActor actor = new QActor("actor");
 
-    public final QActorAuditingFields _super = new QActorAuditingFields(this);
-
     public final SetPath<ActorComment, QActorComment> actorComments = this.<ActorComment, QActorComment>createSet("actorComments", ActorComment.class, QActorComment.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> birth = createNumber("birth", Integer.class);
@@ -30,23 +28,17 @@ public class QActor extends EntityPathBase<Actor> {
 
     public final StringPath content = createString("content");
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
     public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
     public final NumberPath<Double> height = createNumber("height", Double.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
-
     public final StringPath name = createString("name");
 
     public final StringPath specialty = createString("specialty");
 
-    public final NumberPath<Long> ThumbnailId = createNumber("ThumbnailId", Long.class);
+    public final SimplePath<java.net.URL> ThumbnailId = createSimple("ThumbnailId", java.net.URL.class);
 
     public final NumberPath<Double> weight = createNumber("weight", Double.class);
 
