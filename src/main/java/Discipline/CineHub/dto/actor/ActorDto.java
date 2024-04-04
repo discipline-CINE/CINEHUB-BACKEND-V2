@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URL;
+
 @NoArgsConstructor
 @Data
 public class ActorDto {
@@ -17,7 +19,7 @@ public class ActorDto {
   private String specialty;
   private String career;
   private String content;
-  private Long ThumbnailId;
+  private URL ThumbnailId;
 
   public Actor toEntity(){
     return Actor.builder()
@@ -34,7 +36,7 @@ public class ActorDto {
   }
 
   @Builder
-  public ActorDto(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, Long thumbnailId) {
+  public ActorDto(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;

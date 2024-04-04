@@ -3,6 +3,7 @@ package Discipline.CineHub.entity.actor;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
         @Index(columnList = "thumbnail")
 })
 @Entity
-public class Actor extends ActorAuditingFields{
+public class Actor{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;  //id(pk)
@@ -38,7 +39,7 @@ public class Actor extends ActorAuditingFields{
   private String career;
   private String content;
 
-  @Column(nullable = true) private Long ThumbnailId;
+  @Column(nullable = true) private URL ThumbnailId;
 
   @OrderBy("id")
   @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
@@ -46,7 +47,7 @@ public class Actor extends ActorAuditingFields{
   private final Set<ActorComment> actorComments = new LinkedHashSet<>();
 
   @Builder
-  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, Long thumbnailId) {
+  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;
