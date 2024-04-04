@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/api/user/**").authenticated()
                         .requestMatchers("/api/signup/**").permitAll()
-                        .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/chatting/**").permitAll()
                         .requestMatchers("/chat/**").permitAll()
                         .requestMatchers("/api/emails").permitAll() // 로그인 이후에 이메일 인증하기로 하면, authenticated
