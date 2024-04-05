@@ -1,6 +1,9 @@
 debug: false
 management.endpoint.web.exposure.include: "*"
 
+server:
+  port : 8080
+
 logging:
   level:
     ToMist.SpringBoard: debug
@@ -26,10 +29,10 @@ spring:
             trust: smtp.naver.com
     auth-code-expiration-millis: 1800000
   datasource:
-    #    url: jdbc:mysql://localhost:3306/board
-    #    username: root
-    #    password: Beagoodlife0418!
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://${RDS_HOSTNAME:localhost}:${RDS_PORT:3306}/${RDS_DB_NAME:board}
+#    username: ${RDS_USERNAME:root}
+#    password: ${RDS_PASSWORD:Beagoodlife0418!}
+
     url: jdbc:h2:mem:testdb
     username: sa
     driver-class-name: org.h2.Driver
@@ -79,10 +82,10 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
     h2.console.enabled: false
-    sql.init.mode: always
+    sql.init.mode: never
 
   data.rest:
-    base-path: /api
+    base-path: /actor
     detection-strategy: annotated
 
 aws:

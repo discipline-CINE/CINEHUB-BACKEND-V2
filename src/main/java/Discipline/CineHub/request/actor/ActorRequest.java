@@ -20,10 +20,7 @@ public class ActorRequest {
   @NotEmpty
   private Double weight;
   @NotEmpty
-  private String specialty;
-  @NotEmpty
-  private String career;
-  @NotEmpty
   private String content;
+  private String sns;
   private MultipartFile file;
 }
