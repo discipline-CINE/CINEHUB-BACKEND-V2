@@ -16,9 +16,8 @@ public class ActorDto {
   private Integer birth;
   private Double height;
   private Double weight;
-  private String specialty;
-  private String career;
   private String content;
+  private String sns;
   private URL ThumbnailId;
 
   public Actor toEntity(){
@@ -28,23 +27,21 @@ public class ActorDto {
             .birth(this.birth)
             .height(this.height)
             .weight(this.weight)
-            .specialty(this.specialty)
-            .career(this.career)
             .content(this.content)
+            .sns(this.sns)
             .thumbnailId(this.ThumbnailId)
             .build();
   }
 
   @Builder
-  public ActorDto(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, URL thumbnailId) {
+  public ActorDto(String name, GenderType gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;
     this.height = height;
     this.weight = weight;
-    this.specialty = specialty;
-    this.career = career;
     this.content = content;
+    this.sns = sns;
     ThumbnailId = thumbnailId;
   }
 }

@@ -3,12 +3,16 @@ package Discipline.CineHub.service.actor;
 import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.repository.actor.ActorRepository;
+import Discipline.CineHub.request.actor.ActorRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +33,11 @@ public class ActorService {
   }
 
   //모든 배우 조회
+  @Transactional
   public List<Actor> findAllActors(){
     return actorRepository.findAll();
   }
+
+//  // 배우 조회 id를 활용하여
+  public Optional<Actor> findById(Long id){return actorRepository.findById(id);}
 }

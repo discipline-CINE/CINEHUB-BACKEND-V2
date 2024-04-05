@@ -17,9 +17,8 @@ import java.util.Set;
         @Index(columnList = "birth"),
         @Index(columnList = "height"),
         @Index(columnList = "weight"),
-        @Index(columnList = "specialty"),
-        @Index(columnList = "career"),
         @Index(columnList = "content"),
+        @Index(columnList = "sns"),
         @Index(columnList = "thumbnail")
 })
 @Entity
@@ -27,35 +26,30 @@ public class Actor{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;  //id(pk)
-
-  @Setter
-  @Column(nullable = false) private String name;
+  @Setter @Column(nullable = false) private String name;
   @Setter @Column(nullable = false) @Enumerated(EnumType.STRING) private GenderType gender;
   @Setter @Column(nullable = false) private Integer birth;
   @Setter @Column(nullable = false) private Double height;
   @Setter @Column(nullable = false) private Double weight;
+  @Setter private String content;
+  @Setter private String sns;
+  @Setter @Column(nullable = true) private URL ThumbnailId;
 
-  private String specialty;
-  private String career;
-  private String content;
-
-  @Column(nullable = true) private URL ThumbnailId;
 
   @OrderBy("id")
-  @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @ToString.Exclude //circular referencing 이슈 방지
   private final Set<ActorComment> actorComments = new LinkedHashSet<>();
 
   @Builder
-  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, URL thumbnailId) {
+  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;
     this.height = height;
     this.weight = weight;
-    this.specialty = specialty;
-    this.career = career;
     this.content = content;
+    this.sns = sns;
     ThumbnailId = thumbnailId;
   }
 

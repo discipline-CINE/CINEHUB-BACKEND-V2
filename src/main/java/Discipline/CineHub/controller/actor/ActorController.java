@@ -21,11 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/actor")
 public class ActorController {
   private final ActorService actorService;
   private StorageService service;
@@ -36,32 +37,30 @@ public class ActorController {
     this.service = service;
   }
 
-//  @PostMapping("/upload")
-//  public ResponseEntity<URL> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-//    return new ResponseEntity<>(service.uploadFile(file), HttpStatus.OK);
-//  }
-
-  //배우 삭제
-  @PostMapping("/delete-actor")
+  // 배우 삭제
+  @DeleteMapping("/delete-actor")
   public void deleteActorById(Long id){
     actorService.deleteById(id);
   }
 
+  // 모든 배우 조회
   @GetMapping("/all-actors")
   public List<Actor> findAllActors(){
     return actorService.findAllActors();
   }
 
-  @PostMapping("/upload")
-  public URL saveFormRequests(ActorRequest actorRequest) throws IOException{
+  // 배우 수정
+  @PutMapping("/update-actor/{id}")
+  public Optional<Actor> updateActorById(@PathVariable Long id, ActorRequest actorRequest){
+    Optional<Actor> actor = getActorById(id);
+
     String name = actorRequest.getName();
     GenderType gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
     Double height = actorRequest.getHeight();
     Double weight = actorRequest.getWeight();
-    String specialty = actorRequest.getSpecialty();
-    String career = actorRequest.getCareer();
     String content = actorRequest.getContent();
+    String sns = actorRequest.getSns();
     MultipartFile file = actorRequest.getFile();
 
     URL thumbnailId = service.uploadFile(file);
@@ -72,12 +71,45 @@ public class ActorController {
             .birth(birth)
             .height(height)
             .weight(weight)
-            .specialty(specialty)
-            .career(career)
             .content(content)
+            .sns(sns)
+            .thumbnailId(thumbnailId)
+            .build();
+    actorService.save(actorDto);
+
+    return actor;
+  }
+
+  //배우 등록
+  @PostMapping("/upload")
+  public URL saveFormRequests(ActorRequest actorRequest) throws IOException{
+    String name = actorRequest.getName();
+    GenderType gender = actorRequest.getGender();
+    Integer birth = actorRequest.getBirth();
+    Double height = actorRequest.getHeight();
+    Double weight = actorRequest.getWeight();
+    String content = actorRequest.getContent();
+    String sns = actorRequest.getSns();
+    MultipartFile file = actorRequest.getFile();
+
+    URL thumbnailId = service.uploadFile(file);
+
+    ActorDto actorDto = ActorDto.builder()
+            .name(name)
+            .gender(gender)
+            .birth(birth)
+            .height(height)
+            .weight(weight)
+            .content(content)
+            .sns(sns)
             .thumbnailId(thumbnailId)
             .build();
     actorService.save(actorDto);
     return thumbnailId;
+  }
+
+  // ID로 배우 정보 가져오기
+  public Optional<Actor> getActorById(Long id){
+    return actorService.findById(id);
   }
 }

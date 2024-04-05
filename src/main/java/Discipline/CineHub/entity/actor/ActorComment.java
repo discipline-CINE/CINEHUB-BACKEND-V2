@@ -11,11 +11,9 @@ import java.util.Objects;
 @ToString
 @Table(indexes = {
         @Index(columnList = "content"),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
 })
 @Entity
-public class ActorComment extends ActorAuditingFields{
+public class ActorComment{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
