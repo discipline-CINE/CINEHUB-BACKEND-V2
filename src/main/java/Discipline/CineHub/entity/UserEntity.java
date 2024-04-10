@@ -1,7 +1,9 @@
 package Discipline.CineHub.entity;
 
 import Discipline.CineHub.entity.actor.Actor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"Actor"})
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
@@ -51,8 +54,9 @@ public class UserEntity implements UserDetails {
     private String role;
 
     @Setter
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ACTOR_ID")
+    @JsonBackReference
     @ToString.Exclude //circular referencing 이슈 방지
     private Actor actor;
 

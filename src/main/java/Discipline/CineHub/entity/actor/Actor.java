@@ -1,8 +1,10 @@
 package Discipline.CineHub.entity.actor;
 
 import Discipline.CineHub.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -38,6 +40,7 @@ public class Actor{
 
   @Setter
   @OneToOne(mappedBy = "actor")
+  @JsonManagedReference
   private UserEntity user;
 
   @OrderBy("id")

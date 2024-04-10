@@ -34,7 +34,7 @@ public class ActorService {
   }
 
   //모든 배우 조회
-  @Transactional
+
   public List<Actor> findAllActors(){
     return actorRepository.findAll();
   }
