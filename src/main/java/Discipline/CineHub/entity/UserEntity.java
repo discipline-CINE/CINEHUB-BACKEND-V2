@@ -1,11 +1,9 @@
 package Discipline.CineHub.entity;
 
+import Discipline.CineHub.entity.actor.Actor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 @Data
 @Entity
 @Builder
@@ -50,6 +49,11 @@ public class UserEntity implements UserDetails {
 
     @Column
     private String role;
+
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ACTOR_ID")
+    private Actor actor;
 
     // ManyToMany 유지 시 지연 로딩, 로그인 시 LazyInitializationException 발생
     // FetchType.EAGER로 즉시 로딩으로 전환

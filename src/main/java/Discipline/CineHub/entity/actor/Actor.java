@@ -1,5 +1,6 @@
 package Discipline.CineHub.entity.actor;
 
+import Discipline.CineHub.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +36,9 @@ public class Actor{
   @Setter private String sns;
   @Setter @Column(nullable = true) private URL ThumbnailId;
 
+  @Setter
+  @OneToOne(mappedBy = "actor")
+  private UserEntity user;
 
   @OrderBy("id")
   @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

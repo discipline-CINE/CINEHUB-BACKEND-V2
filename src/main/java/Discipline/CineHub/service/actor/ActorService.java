@@ -1,6 +1,7 @@
 package Discipline.CineHub.service.actor;
 
 import Discipline.CineHub.dto.actor.ActorDto;
+import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.request.actor.ActorRequest;
@@ -40,4 +41,7 @@ public class ActorService {
 
 //  // 배우 조회 id를 활용하여
   public Optional<Actor> findById(Long id){return actorRepository.findById(id);}
+
+  public Actor getById(Long id){return actorRepository.getById(id);}
+
 }

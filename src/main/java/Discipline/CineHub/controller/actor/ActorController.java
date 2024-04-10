@@ -2,12 +2,14 @@ package Discipline.CineHub.controller.actor;
 
 import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.dto.actor.ThumbnailDto;
+import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.GenderType;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
 import Discipline.CineHub.service.actor.StorageService;
 import Discipline.CineHub.service.actor.ThumbnailService;
+import Discipline.CineHub.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,13 @@ import java.util.Optional;
 public class ActorController {
   private final ActorService actorService;
   private StorageService service;
+  private UserService userService;
 
   @Autowired
-  public ActorController(ActorService actorService, StorageService service) {
+  public ActorController(ActorService actorService, StorageService service, UserService userService) {
     this.actorService = actorService;
     this.service = service;
+    this.userService = userService;
   }
 
   // 배우 삭제
@@ -104,12 +108,18 @@ public class ActorController {
             .sns(sns)
             .thumbnailId(thumbnailId)
             .build();
-    actorService.save(actorDto);
+    Long actorId = actorService.save(actorDto);
+    userService.connectUserAndActor(actorId);
+
     return thumbnailId;
   }
 
   // ID로 배우 정보 가져오기
   public Optional<Actor> getActorById(Long id){
     return actorService.findById(id);
+  }
+
+  public Actor getActor(Long id){
+    return actorService.getById(id);
   }
 }
