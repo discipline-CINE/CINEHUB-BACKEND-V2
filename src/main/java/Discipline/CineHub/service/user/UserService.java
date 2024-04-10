@@ -148,10 +148,9 @@ public class UserService {
       return userRepository.getById(id);
     }
 
-    public String connectUserAndActor(Long id){
+    public String connectUserAndActor(Long id, String username){
       Actor actor = actorService.getById(id);
 
-      String username = getLoggedInUsername();
       UserEntity userEntity = userRepository
               .findByUsername(username)
               .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));

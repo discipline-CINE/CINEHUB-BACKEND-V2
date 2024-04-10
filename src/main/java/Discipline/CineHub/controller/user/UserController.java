@@ -58,9 +58,4 @@ public class UserController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
-
-    @GetMapping("/find-actor/{id}")
-    public String findActorById(@PathVariable Long id){
-      return userService.connectUserAndActor(id);
-    }
 }
