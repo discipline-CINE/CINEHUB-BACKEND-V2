@@ -53,6 +53,7 @@ public class UserEntity implements UserDetails {
     @Setter
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ACTOR_ID")
+    @ToString.Exclude //circular referencing 이슈 방지
     private Actor actor;
 
     // ManyToMany 유지 시 지연 로딩, 로그인 시 LazyInitializationException 발생
