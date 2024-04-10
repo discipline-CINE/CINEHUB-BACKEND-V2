@@ -85,8 +85,8 @@ public class ActorController {
   }
 
   //배우 등록
-  @PostMapping("/upload/{username}")
-  public URL saveFormRequests(@PathVariable String username,ActorRequest actorRequest) throws IOException{
+  @PostMapping("/upload")
+  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException{
     String name = actorRequest.getName();
     GenderType gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
