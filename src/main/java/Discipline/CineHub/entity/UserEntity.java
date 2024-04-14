@@ -57,6 +57,7 @@ public class UserEntity implements UserDetails {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ACTOR_ID")
     @JsonBackReference
+    @JsonIgnore
     @ToString.Exclude //circular referencing 이슈 방지
     private Actor actor;
 
@@ -64,6 +65,7 @@ public class UserEntity implements UserDetails {
     // FetchType.EAGER로 즉시 로딩으로 전환
     // DB I/O 부담 늘어서 성능 저하 일어나기 때문에 대용량 트래픽 발생 시에는 좀 고민해봐야할듯?
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
@@ -71,6 +73,7 @@ public class UserEntity implements UserDetails {
     )
     private Set<AuthorityEntity> authorities;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

@@ -114,12 +114,9 @@ public class ActorController {
     return thumbnailId;
   }
 
+
   // ID로 배우 정보 가져오기
   public Optional<Actor> getActorById(Long id){
     return actorService.findById(id);
-  }
-
-  public Actor getActor(Long id){
-    return actorService.getById(id);
   }
 }
