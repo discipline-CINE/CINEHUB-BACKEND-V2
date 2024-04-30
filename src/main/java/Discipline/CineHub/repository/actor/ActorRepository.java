@@ -19,4 +19,6 @@ public interface ActorRepository extends
   void deleteActorByName(String name);
 
   Optional<Actor> findById(Long id);
+
+  Actor findByUser_Username(String username);
 }

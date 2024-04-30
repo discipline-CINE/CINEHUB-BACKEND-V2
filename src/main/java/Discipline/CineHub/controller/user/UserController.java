@@ -4,6 +4,7 @@ import Discipline.CineHub.annotation.CustomEmail;
 import Discipline.CineHub.dto.SingleResponseDto;
 import Discipline.CineHub.dto.UserDto;
 import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.model.EmailVerificationResult;
 import Discipline.CineHub.service.user.UserService;
 import jakarta.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 
 
 @Slf4j
@@ -25,15 +27,18 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<UserEntity> signup(@RequestBody @Valid UserDto userDto) {
         return new ResponseEntity<>(userService.signup(userDto), HttpStatus.OK);
     }
 
+    // 유저 정보 가져오기
     @PostMapping("/user")
     public ResponseEntity<String> getMyUserInfo() {
         return ResponseEntity.ok("user");
     }
+
 
     @PostMapping("/user/{username}")
     public ResponseEntity<String> getUserInfo(@PathVariable String username) {
@@ -53,5 +58,15 @@ public class UserController {
         EmailVerificationResult response = userService.verifiedCode(email, authCode);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
+    @GetMapping("/all-users")
+    public List<UserEntity> findAllUsers(){
+      return userService.findAllUsers();
+    }
+
+    @PostMapping("/access-expert")
+    public void accessExpert(Long id){
+      userService.changeToExpert(id);
     }
 }

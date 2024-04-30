@@ -1,11 +1,12 @@
 package Discipline.CineHub.entity;
 
+import Discipline.CineHub.entity.actor.Actor;
+import Discipline.CineHub.entity.expert.ExpertBoard;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +16,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"Actor"})
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
@@ -51,10 +54,22 @@ public class UserEntity implements UserDetails {
     @Column
     private String role;
 
+    @OneToOne(mappedBy = "user")
+    ExpertBoard expertBoard;
+
+    @Setter
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ACTOR_ID")
+    @JsonBackReference
+    @JsonIgnore
+    @ToString.Exclude //circular referencing 이슈 방지
+    private Actor actor;
+
     // ManyToMany 유지 시 지연 로딩, 로그인 시 LazyInitializationException 발생
     // FetchType.EAGER로 즉시 로딩으로 전환
     // DB I/O 부담 늘어서 성능 저하 일어나기 때문에 대용량 트래픽 발생 시에는 좀 고민해봐야할듯?
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
@@ -62,6 +77,7 @@ public class UserEntity implements UserDetails {
     )
     private Set<AuthorityEntity> authorities;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

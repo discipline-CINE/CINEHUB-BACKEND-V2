@@ -1,9 +1,15 @@
 package Discipline.CineHub.entity.actor;
 
+import Discipline.CineHub.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,6 +41,10 @@ public class Actor{
   @Setter private String sns;
   @Setter @Column(nullable = true) private URL ThumbnailId;
 
+  @Setter
+  @OneToOne(mappedBy = "actor")
+  @JsonManagedReference
+  private UserEntity user;
 
   @OrderBy("id")
   @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
