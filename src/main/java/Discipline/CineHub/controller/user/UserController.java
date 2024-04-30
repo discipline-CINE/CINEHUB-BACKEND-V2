@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 
 
 @Slf4j
@@ -57,5 +58,15 @@ public class UserController {
         EmailVerificationResult response = userService.verifiedCode(email, authCode);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
+    @GetMapping("/all-users")
+    public List<UserEntity> findAllUsers(){
+      return userService.findAllUsers();
+    }
+
+    @PostMapping("/access-expert")
+    public void accessExpert(Long id){
+      userService.changeToExpert(id);
     }
 }

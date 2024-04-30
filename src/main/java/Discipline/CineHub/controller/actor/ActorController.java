@@ -114,6 +114,11 @@ public class ActorController {
     return thumbnailId;
   }
 
+  @GetMapping("/find-Actor/{username}")
+  public Actor findByUsername(@PathVariable String username){
+    return actorService.getByUsername(username);
+  }
+
 
   // ID로 배우 정보 가져오기
   public Optional<Actor> getActorById(Long id){

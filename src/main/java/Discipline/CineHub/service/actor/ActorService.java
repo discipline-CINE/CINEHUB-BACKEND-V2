@@ -47,4 +47,8 @@ public class ActorService {
 
   public Actor getById(Long id){return actorRepository.getById(id);}
 
+  public Actor getByUsername(String username){
+    return actorRepository.findByUser_Username(username);
+  }
+
 }

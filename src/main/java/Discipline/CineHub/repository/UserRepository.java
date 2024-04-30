@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, Queryds
 
     @Transactional
     Optional<UserEntity> findByPhonenumber(String phonenumber);
+
+    Optional<UserEntity> findById(Long id);
 }

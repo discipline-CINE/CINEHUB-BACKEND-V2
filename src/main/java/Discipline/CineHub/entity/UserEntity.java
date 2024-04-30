@@ -1,6 +1,7 @@
 package Discipline.CineHub.entity;
 
 import Discipline.CineHub.entity.actor.Actor;
+import Discipline.CineHub.entity.expert.ExpertBoard;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -52,6 +53,9 @@ public class UserEntity implements UserDetails {
 
     @Column
     private String role;
+
+    @OneToOne(mappedBy = "user")
+    ExpertBoard expertBoard;
 
     @Setter
     @OneToOne(fetch = FetchType.EAGER)

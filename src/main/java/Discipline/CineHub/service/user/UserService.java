@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -85,6 +86,7 @@ public class UserService {
                 .username(userDto.getUsername())
                 .address(userDto.getAddress())
                 .email(userDto.getEmail())
+                .role("USER")
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .phonenumber(userDto.getPhonenumber())
                 .authorities(Collections.singleton(authority))
@@ -148,6 +150,10 @@ public class UserService {
       return userRepository.getById(id);
     }
 
+  public Optional<UserEntity> findByUsername(String username){
+      return userRepository.findByUsername(username);
+  }
+
     public String connectUserAndActor(Long id, String username){
       Actor actor = actorService.getById(id);
 
@@ -158,5 +164,15 @@ public class UserService {
       userEntity.setActor(actor);
 
       return userEntity.getActor().getName();
+    }
+
+    @Transactional
+    public void changeToExpert(Long id){
+      Optional<UserEntity> user = userRepository.findById(id);
+      user.get().setRole("EXPERT");
+    }
+
+    public List<UserEntity> findAllUsers(){
+      return userRepository.findAll();
     }
 }
