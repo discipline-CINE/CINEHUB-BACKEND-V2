@@ -167,9 +167,14 @@ public class UserService {
     }
 
     @Transactional
-    public void changeToExpert(Long id){
-      Optional<UserEntity> user = userRepository.findById(id);
+    public void changeToExpert(String username){
+      Optional<UserEntity> user = userRepository.findByUsername(username);
       user.get().setRole("EXPERT");
+    }
+
+    public String checkMyRole(String username){
+      Optional<UserEntity> user = userRepository.findByUsername(username);
+      return user.get().getRole();
     }
 
     public List<UserEntity> findAllUsers(){

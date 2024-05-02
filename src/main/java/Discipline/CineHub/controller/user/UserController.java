@@ -65,8 +65,8 @@ public class UserController {
       return userService.findAllUsers();
     }
 
-    @PostMapping("/access-expert")
-    public void accessExpert(Long id){
-      userService.changeToExpert(id);
-    }
+//    @PostMapping("/access-expert")
+//    public void accessExpert(Long id){
+//      userService.changeToExpert(id);
+//    }
 }

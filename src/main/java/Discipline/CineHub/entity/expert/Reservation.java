@@ -1,5 +1,7 @@
 package Discipline.CineHub.entity.expert;
 
+import Discipline.CineHub.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,13 @@ public class Reservation {
   String email;
   LocalDate reservationDate;
   ConfirmType confirm;
-  @ManyToOne @JoinColumn(name = "expertboard_id") ExpertBoard expertBoard;
+
+  @JsonBackReference
+  @ManyToOne
+  @JoinColumn(name = "expertboard_id")
+  ExpertBoard expertBoard;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  UserEntity user;
 }
