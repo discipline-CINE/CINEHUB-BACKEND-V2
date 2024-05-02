@@ -5,6 +5,7 @@ import Discipline.CineHub.entity.expert.ExpertBoard;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,7 +55,8 @@ public class UserEntity implements UserDetails {
     @Column
     private String role;
 
-    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     ExpertBoard expertBoard;
 
     @Setter
