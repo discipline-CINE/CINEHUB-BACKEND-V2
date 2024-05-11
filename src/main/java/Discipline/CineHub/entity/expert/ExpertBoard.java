@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,9 +23,16 @@ public class ExpertBoard {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
   String title;
-  int price;
   String type;
   String content;
+  URL thumbnail;
+  // Standard 가격
+  int sPrice;
+  // Deluxe 가격
+  int dPrice;
+  // Premium 가격
+  int pPrice;
+//  @ElementCollection(fetch = FetchType.EAGER) List<URL> imgs;
 
   @JsonBackReference
   @JoinColumn(name = "user_id")
@@ -34,4 +43,10 @@ public class ExpertBoard {
   @ToString.Exclude
   @OneToMany(mappedBy="expertBoard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   List<Reservation> reservations;
+
+  @OneToMany(fetch = FetchType.EAGER)
+  List<PriceFeat> priceFeats;
+
+  @OneToMany(mappedBy="expertBoard", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  List<ExpertComment> expertComments;
 }

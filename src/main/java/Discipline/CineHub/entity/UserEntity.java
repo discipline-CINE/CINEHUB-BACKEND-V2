@@ -2,6 +2,7 @@ package Discipline.CineHub.entity;
 
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.expert.ExpertBoard;
+import Discipline.CineHub.entity.expert.ExpertComment;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -78,6 +79,12 @@ public class UserEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")}
     )
     private Set<AuthorityEntity> authorities;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonBackReference
+    @JsonIgnore
+    @ToString.Exclude //circular referencing 이슈 방지
+    List<ExpertComment> expertComment;
 
     @JsonIgnore
     @Override

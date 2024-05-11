@@ -1,17 +1,20 @@
 package Discipline.CineHub.controller.expert;
 
-import Discipline.CineHub.dto.expert.EachBoardDto;
-import Discipline.CineHub.dto.expert.ExpertBoardDto;
-import Discipline.CineHub.dto.expert.GetAllBoardDto;
-import Discipline.CineHub.dto.expert.ReservationDto;
+import Discipline.CineHub.dto.expert.*;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.expert.ExpertBoard;
+import Discipline.CineHub.service.actor.StorageService;
 import Discipline.CineHub.service.expert.ExpertBoardService;
+import Discipline.CineHub.service.expert.ExpertBoardStorageService;
 import Discipline.CineHub.service.user.UserService;
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +28,61 @@ public class ExpertBoardController {
   @Autowired
   UserService userService;
 
+  @Autowired
+  ExpertBoardStorageService expertBoardStorageService;
+
   @PostMapping("/create-board")
-  public void createBoard(ExpertBoardDto expertBoardDto, String username) {
+  public void createBoard(ExpertBoardRequest expertBoardRequest, String username) {
     Optional<UserEntity> user = userService.findByUsername(username);
     if (user.get().getRole() == "USER") {
       System.out.println("Error");
     } else {
+      URL thumbnail = expertBoardStorageService.uploadFile(expertBoardRequest.getThumbnailImg());
+      List<PriceFeatDto> priceFeatDtos = new ArrayList<>();
+      for (List<String> priceFeat : expertBoardRequest.getPriceFeats()){
+        PriceFeatDto priceFeatDto = new PriceFeatDto(
+                priceFeat.get(0),
+                priceFeat.get(1),
+                priceFeat.get(2),
+                priceFeat.get(3)
+        );
+        priceFeatDtos.add(priceFeatDto);
+      }
+
+      ExpertBoardDto expertBoardDto = new ExpertBoardDto(
+              expertBoardRequest.getTitle(),
+              expertBoardRequest.getSPrice(),
+              expertBoardRequest.getDPrice(),
+              expertBoardRequest.getPPrice(),
+              expertBoardRequest.getType(),
+              expertBoardRequest.getContent(),
+              thumbnail,
+              priceFeatDtos
+      );
+
+      if(!(expertBoardRequest.getImgs().isEmpty())){
+        List<MultipartFile> imgs = expertBoardRequest.getImgs();
+        List<URL> imgUrl = new ArrayList<>();
+
+        for(MultipartFile img : imgs){
+          URL tmp = expertBoardStorageService.uploadFile(img);
+          imgUrl.add(tmp);
+        }
+        expertBoardDto.setImgs(imgUrl);
+      }
+
       expertBoardService.enrollExpertBoard(expertBoardDto, user.get());
     }
   }
 
-  @PostMapping("/check-reservation")
-  public List<ReservationDto> checkReservation(Long expertBoardId){
+  @GetMapping("/check-reservation/{expertBoardId}")
+  public List<ReservationDto> checkReservation(@PathVariable("expertBoardId") Long expertBoardId){
     return expertBoardService.checkReservation(expertBoardId);
+  }
+
+  @GetMapping("/check-reservation-date/{expertBoardId}")
+  public List<LocalDate> checkReservationDate(@PathVariable("expertBoardId") Long expertBoardId){
+    return expertBoardService.checkReservationDate(expertBoardId);
   }
 
   @GetMapping("/all-board")

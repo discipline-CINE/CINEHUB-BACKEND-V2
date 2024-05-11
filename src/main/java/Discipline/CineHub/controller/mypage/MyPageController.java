@@ -1,9 +1,12 @@
 package Discipline.CineHub.controller.mypage;
 
 import Discipline.CineHub.dto.UserDto;
+import Discipline.CineHub.dto.expert.ExpertBoardIdTitleUsername;
+import Discipline.CineHub.dto.expert.ExpertCommentDto;
 import Discipline.CineHub.dto.expert.ReservationDto;
 import Discipline.CineHub.dto.expert.ReservationDtoByUser;
 import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.entity.expert.ExpertBoard;
 import Discipline.CineHub.service.expert.ExpertBoardService;
 import Discipline.CineHub.service.mypage.MyPageService;
 import Discipline.CineHub.service.user.UserService;
@@ -24,6 +27,9 @@ public class MyPageController {
 
   @Autowired
   MyPageService myPageService;
+
+  @Autowired
+  ExpertBoardService expertBoardService;
 
   // 마이페이지 : 유저(자신의) 정보 가져오기
   @GetMapping("/user-info")
@@ -86,4 +92,57 @@ public class MyPageController {
     }
     return myPageService.checkReservationByUser(authentication.getName());
   }
+
+  // 완료된 전문가 서비스 조회 - 의뢰인
+  @GetMapping("/check-complete-service")
+  public List<ExpertBoardIdTitleUsername> checkCompleteService(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || authentication.getPrincipal() == null) {
+      new RuntimeException("마이페이지 오류입니다.");
+    }
+    return myPageService.checkComplete(authentication.getName());
+  }
+
+  // 댓글 등록 - 의뢰인
+  @PostMapping("/expert-comment")
+  public String expertComment(String comment, Long expertBoardId){
+    ExpertCommentDto expertCommentDto = new ExpertCommentDto();
+
+    ExpertBoard expertBoard = expertBoardService.getById(expertBoardId);
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Optional<UserEntity> user = userService.findByUsername(authentication.getName());
+
+    expertCommentDto.setComment(comment);
+    expertCommentDto.setExpertBoard(expertBoard);
+    expertCommentDto.setUser(user.get());
+
+    return myPageService.expertComment(expertCommentDto);
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

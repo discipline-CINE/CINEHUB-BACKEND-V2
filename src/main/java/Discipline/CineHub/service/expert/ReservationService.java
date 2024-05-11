@@ -1,5 +1,6 @@
 package Discipline.CineHub.service.expert;
 
+import Discipline.CineHub.dto.expert.ExpertBoardIdTitleUsername;
 import Discipline.CineHub.dto.expert.ReservationDto;
 import Discipline.CineHub.dto.expert.ReservationDtoByUser;
 import Discipline.CineHub.entity.UserEntity;
@@ -12,6 +13,7 @@ import Discipline.CineHub.repository.expert.ReservationRepository;
 import Discipline.CineHub.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +41,13 @@ public class ReservationService {
     reservationRepository.save(reservation);
   }
 
+  @Transactional
   public ReservationDto decideReservation(Long resId, String op){
     Reservation res = reservationRepository.findById(resId).get();
     switch (op){
       case "ACCEPT" : res.setConfirm(ConfirmType.ACCEPT); break;
       case "REJECT" : res.setConfirm(ConfirmType.REJECT); break;
+      case "COMPLETE" : res.setConfirm(ConfirmType.COMPLETE); break;
       default: break;
     }
     return new ReservationDto(res.getId(), res.getName(), res.getPhone(),
@@ -60,9 +64,28 @@ public class ReservationService {
                       reservation.getEmail(), reservation.getReservationDate(), reservation.getConfirm(),
                       reservation.getExpertBoard().getId(),
                       reservation.getExpertBoard().getTitle(),
-                      reservation.getExpertBoard().getPrice()
+                      reservation.getExpertBoard().getSPrice(),
+                      reservation.getExpertBoard().getDPrice(),
+                      reservation.getExpertBoard().getPPrice()
                       );
       res.add(tmp);
+    }
+    return res;
+  }
+
+  public List<ExpertBoardIdTitleUsername> checkComplete(UserEntity user){
+    List<Reservation> reservations = reservationRepository.findByUser(user);
+    List<ExpertBoardIdTitleUsername> res = new ArrayList<>();
+
+    for (Reservation reservation : reservations){
+      if(reservation.getConfirm().equals(ConfirmType.COMPLETE)){
+        ExpertBoardIdTitleUsername tmp = new ExpertBoardIdTitleUsername(
+                reservation.getExpertBoard().getId(),
+                reservation.getExpertBoard().getTitle(),
+                reservation.getUser().getUsername()
+        );
+        res.add(tmp);
+      }
     }
     return res;
   }
