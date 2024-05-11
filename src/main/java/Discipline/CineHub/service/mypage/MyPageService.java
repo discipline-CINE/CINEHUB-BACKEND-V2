@@ -1,8 +1,9 @@
 package Discipline.CineHub.service.mypage;
 
-import Discipline.CineHub.dto.expert.ReservationDto;
-import Discipline.CineHub.dto.expert.ReservationDtoByUser;
+import Discipline.CineHub.dto.expert.*;
 import Discipline.CineHub.entity.UserEntity;
+import Discipline.CineHub.entity.expert.ExpertComment;
+import Discipline.CineHub.repository.expert.ExpertCommentRepository;
 import Discipline.CineHub.service.expert.ExpertBoardService;
 import Discipline.CineHub.service.expert.ReservationService;
 import Discipline.CineHub.service.user.UserService;
@@ -25,6 +26,9 @@ public class MyPageService {
   @Autowired
   ReservationService reservationService;
 
+  @Autowired
+  ExpertCommentRepository expertCommentRepository;
+
   public List<ReservationDto> checkReservation(String username){
     Long id = userService.findByUsername(username).get().getExpertBoard().getId();
     return expertBoardService.checkReservation(id);
@@ -34,4 +38,27 @@ public class MyPageService {
     Optional<UserEntity> user = userService.findByUsername(username);
     return reservationService.findByUser(user.get());
   }
+
+  public List<ExpertBoardIdTitleUsername> checkComplete(String username){
+    Optional<UserEntity> user = userService.findByUsername(username);
+    return reservationService.checkComplete(user.get());
+  }
+
+  public String expertComment(ExpertCommentDto expertCommentDto){
+    ExpertComment expertComment = new ExpertComment();
+
+    expertComment.setComment(expertCommentDto.getComment());
+    expertComment.setExpertBoard(expertCommentDto.getExpertBoard());
+    expertComment.setUser(expertCommentDto.getUser());
+
+    expertCommentRepository.save(expertComment);
+
+    return expertCommentDto.getComment();
+  }
+
+//  public List<GetExpertCommentDto> getMyComment(String username){
+//    List<GetExpertCommentDto> getExpertCommentDtos = new ArrayList<>();
+//
+//
+//  }
 }

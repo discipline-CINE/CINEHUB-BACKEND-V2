@@ -3,6 +3,7 @@ management.endpoint.web.exposure.include: "*"
 
 server:
   port : 8080
+#  port : 5000
 
 logging:
   level:
@@ -29,10 +30,10 @@ spring:
             trust: smtp.naver.com
     auth-code-expiration-millis: 1800000
   datasource:
-#    url: jdbc:mysql://${RDS_HOSTNAME:localhost}:${RDS_PORT:3306}/${RDS_DB_NAME:board}
-#    username: ${RDS_USERNAME:root}
-#    password: ${RDS_PASSWORD:Beagoodlife0418!}
-
+#    url: jdbc:mysql://discipline-rds.csqfm7ao5z48.ap-northeast-2.rds.amazonaws.com:3306/discipline
+#    username: admin
+#    password: discipline
+#
     url: jdbc:h2:mem:testdb
     username: sa
     driver-class-name: org.h2.Driver
@@ -90,6 +91,7 @@ spring:
 
 aws:
   s3:
+    expertBucket: discipline-expert
     bucketName: discipline-actor
     bucket.url: https://s3.ap-northeast-2.amazonaws.com/discipline-actor
     region: ap-northeast-2

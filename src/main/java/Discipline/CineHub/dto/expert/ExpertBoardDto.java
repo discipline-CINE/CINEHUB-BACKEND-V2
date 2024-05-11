@@ -4,19 +4,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.net.URL;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ExpertBoardDto {
   String title;
-  int price;
+  int sPrice;
+  int dPrice;
+  int pPrice;
   String type;
   String content;
+  URL thumbnail;
+  List<URL> imgs;
+  List<PriceFeatDto> priceFeatDtos;
 
-  public ExpertBoardDto(String title, int price, String type, String content) {
+  public ExpertBoardDto(String title, int sPrice, int dPrice, int pPrice, String type, String content, URL thumbnail, List<PriceFeatDto> priceFeatDtos) {
     this.title = title;
-    this.price = price;
+    this.sPrice = sPrice;
+    this.dPrice = dPrice;
+    this.pPrice = pPrice;
     this.type = type;
     this.content = content;
+    this.thumbnail = thumbnail;
+    this.priceFeatDtos = priceFeatDtos;
   }
 }

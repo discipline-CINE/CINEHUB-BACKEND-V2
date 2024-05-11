@@ -19,9 +19,11 @@ public class ReservationDtoByUser {
   ConfirmType confirmType;
   Long boardId;
   String boardTitle;
-  int boardPrice;
+  int sPrice;
+  int dPrice;
+  int pPrice;
 
-  public ReservationDtoByUser(Long id, String name, String phone, String email, LocalDate reservationDate, ConfirmType confirmType, Long boardId, String boardTitle, int boardPrice) {
+  public ReservationDtoByUser(Long id, String name, String phone, String email, LocalDate reservationDate, ConfirmType confirmType, Long boardId, String boardTitle, int sPrice, int dPrice, int pPrice) {
     this.id = id;
     this.name = name;
     this.phone = phone;
@@ -30,6 +32,8 @@ public class ReservationDtoByUser {
     this.confirmType = confirmType;
     this.boardId = boardId;
     this.boardTitle = boardTitle;
-    this.boardPrice = boardPrice;
+    this.sPrice = sPrice;
+    this.dPrice = dPrice;
+    this.pPrice = pPrice;
   }
 }
