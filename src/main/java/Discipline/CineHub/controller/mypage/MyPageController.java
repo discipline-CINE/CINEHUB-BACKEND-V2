@@ -32,13 +32,15 @@ public class MyPageController {
   ExpertBoardService expertBoardService;
 
   // 마이페이지 : 유저(자신의) 정보 가져오기
-  @GetMapping("/user-info")
-  public UserDto getUserInfo(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
+  @GetMapping("/user-info/{username}")
+  public UserDto getUserInfo(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Optional<UserEntity> user =  userService.findByUsername(username);
+
+    if (user == null) {
+      new RuntimeException("유저가 없습니다.");
     }
-    Optional<UserEntity> user =  userService.findByUsername(authentication.getName());
+
     UserDto userDto = new UserDto();
 
     userDto.setUsername(user.get().getUsername());
@@ -52,66 +54,66 @@ public class MyPageController {
   }
 
   // 마이페이지 : 일반 유저에서 전문가 유저로 역할 변경
-  @PostMapping("/be-expert")
-  public ResponseEntity<String> beExpert(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
-    }
-    userService.changeToExpert(authentication.getName());
+  @PostMapping("/be-expert/{username}")
+  public ResponseEntity<String> beExpert(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication == null || authentication.getPrincipal() == null) {
+//      new RuntimeException("마이페이지 오류입니다.");
+//    }
+    userService.changeToExpert(username);
 
     return ResponseEntity.ok("전문가가 되었습니다");
   }
 
   // 마이페이지 : 유저의 ROLE 확인
-  @GetMapping("/my-role")
-  public String checkMyRole(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
-    }
-    return userService.checkMyRole(authentication.getName());
+  @GetMapping("/my-role/{username}")
+  public String checkMyRole(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication == null || authentication.getPrincipal() == null) {
+//      new RuntimeException("마이페이지 오류입니다.");
+//    }
+    return userService.checkMyRole(username);
   }
 
   // 마에페이지 : 전문가 - 예약 조회
-  @GetMapping("/check-reservation-expert")
-  public List<ReservationDto> checkReservationByExp(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
-    }
-      return myPageService.checkReservation(authentication.getName());
+  @GetMapping("/check-reservation-expert/{username}")
+  public List<ReservationDto> checkReservationByExp(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication == null || authentication.getPrincipal() == null) {
+//      new RuntimeException("마이페이지 오류입니다.");
+//    }
+      return myPageService.checkReservation(username);
   }
 
   // 마이페이지 : 일반 - 예약 조회
-  @GetMapping("/check-reservation-user")
-  public List<ReservationDtoByUser> checkReservationByUser(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
-    }
-    return myPageService.checkReservationByUser(authentication.getName());
+  @GetMapping("/check-reservation-user/{username}")
+  public List<ReservationDtoByUser> checkReservationByUser(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication == null || authentication.getPrincipal() == null) {
+//      new RuntimeException("마이페이지 오류입니다.");
+//    }
+    return myPageService.checkReservationByUser(username);
   }
 
   // 완료된 전문가 서비스 조회 - 의뢰인
-  @GetMapping("/check-complete-service")
-  public List<ExpertBoardIdTitleUsername> checkCompleteService(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication.getPrincipal() == null) {
-      new RuntimeException("마이페이지 오류입니다.");
-    }
-    return myPageService.checkComplete(authentication.getName());
+  @GetMapping("/check-complete-service/{username}")
+  public List<ExpertBoardIdTitleUsername> checkCompleteService(@PathVariable("username") String username){
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if (authentication == null || authentication.getPrincipal() == null) {
+//      new RuntimeException("마이페이지 오류입니다.");
+//    }
+    return myPageService.checkComplete(username);
   }
 
   // 댓글 등록 - 의뢰인
-  @PostMapping("/expert-comment")
-  public String expertComment(String comment, Long expertBoardId){
+  @PostMapping("/expert-comment/{username}")
+  public String expertComment(@PathVariable("username") String username,String comment, Long expertBoardId){
     ExpertCommentDto expertCommentDto = new ExpertCommentDto();
 
     ExpertBoard expertBoard = expertBoardService.getById(expertBoardId);
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Optional<UserEntity> user = userService.findByUsername(authentication.getName());
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Optional<UserEntity> user = userService.findByUsername(username);
 
     expertCommentDto.setComment(comment);
     expertCommentDto.setExpertBoard(expertBoard);
