@@ -39,7 +39,7 @@ public class ExpertBoardService {
     expertBoard.setSPrice(sPrice);
     expertBoard.setDPrice(dPrice);
     expertBoard.setPPrice(pPrice);
-    expertBoard.setTitle(type);
+    expertBoard.setType(type);
     expertBoard.setContent(content);
     expertBoard.setThumbnail(thumbnail);
     expertBoard.setUser(user);
@@ -104,7 +104,14 @@ public class ExpertBoardService {
       URL thumbnail = expertBoard.getThumbnail();
       List<PriceFeat> priceFeats = expertBoard.getPriceFeats();
 
-      GetAllBoardDto tmp = new GetAllBoardDto(id, title, sPrice, dPrice, pPrice, type, content, thumbnail, priceFeats);
+      List<PriceFeatDto> priceFeatDtos = new ArrayList<>();
+
+      for(PriceFeat priceFeat : priceFeats){
+        PriceFeatDto tmp = new PriceFeatDto(priceFeat.getLabel(), priceFeat.getSFeat(), priceFeat.getDFeat(), priceFeat.getPFeat());
+        priceFeatDtos.add(tmp);
+      }
+
+      GetAllBoardDto tmp = new GetAllBoardDto(id, title, sPrice, dPrice, pPrice, type, content, thumbnail, priceFeatDtos);
       boardDtos.add(tmp);
     }
     return boardDtos;
@@ -126,7 +133,15 @@ public class ExpertBoardService {
     int dPrice = expertBoard.get().getDPrice();
     int pPrice = expertBoard.get().getPPrice();
     List<ExpertComment> expertComments = expertBoard.get().getExpertComments();
+    List<PriceFeat> priceFeats = expertBoard.get().getPriceFeats();
+    List<PriceFeatDto> priceFeatDtos = new ArrayList<>();
+
     List<String> comments = new ArrayList<>();
+
+    for(PriceFeat priceFeat : priceFeats){
+      PriceFeatDto priceFeatDto = new PriceFeatDto(priceFeat.getLabel(), priceFeat.getSFeat(), priceFeat.getDFeat(), priceFeat.getPFeat());
+      priceFeatDtos.add(priceFeatDto);
+    }
 
     for(ExpertComment expertComment : expertComments){
       String comm = expertComment.getComment();
@@ -149,6 +164,7 @@ public class ExpertBoardService {
     boardDto.setThumbnail(thumbnail);
     boardDto.setContent(content);
     boardDto.setExpertComments(comments);
+    boardDto.setPriceFeats(priceFeatDtos);
 //    boardDto.setImgs(imgs);
 
     return boardDto;

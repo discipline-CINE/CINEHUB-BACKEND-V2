@@ -20,9 +20,9 @@ public class GetAllBoardDto {
   String type;
   String content;
   URL thumbnail;
-  List<PriceFeat> priceFeats;
+  List<PriceFeatDto> priceFeats;
 
-  public GetAllBoardDto(Long id, String title, int sPrice,int dPrice,int pPrice, String type, String content, URL thumbnail, List<PriceFeat> priceFeats) {
+  public GetAllBoardDto(Long id, String title, int sPrice,int dPrice,int pPrice, String type, String content, URL thumbnail, List<PriceFeatDto> priceFeats) {
     this.id = id;
     this.title = title;
     this.sPrice = sPrice;
