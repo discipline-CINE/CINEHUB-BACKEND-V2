@@ -1,5 +1,6 @@
 package Discipline.CineHub.security.authentication;
 
+import Discipline.CineHub.dto.UserResponseDto;
 import Discipline.CineHub.entity.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,20 +24,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        UserEntity user = (UserEntity)authentication.getPrincipal();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
 
-        // 쿠키 생성
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+
+        // 쿠키 생성 및 설정
         Cookie cookie = new Cookie("JSESSIONID", request.getSession().getId());
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // HTTPS를 통해서만 쿠키 전송
-        // SameSite=None 설정을 추가하기 위해 Set-Cookie 헤더를 직접 설정
+        cookie.setSecure(true);
         String cookieHeader = String.format("%s; SameSite=None", cookie.toString());
         response.addHeader("Set-Cookie", cookieHeader);
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), user);
+        objectMapper.writeValue(response.getWriter(), userResponseDto);
     }
 }
