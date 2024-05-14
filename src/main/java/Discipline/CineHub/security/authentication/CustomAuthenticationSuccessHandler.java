@@ -1,5 +1,6 @@
 package Discipline.CineHub.security.authentication;
 
+import Discipline.CineHub.dto.UserResponseDto;
 import Discipline.CineHub.entity.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         UserEntity user = (UserEntity)authentication.getPrincipal();
 
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+
         // 쿠키 생성
         Cookie cookie = new Cookie("JSESSIONID", request.getSession().getId());
         cookie.setPath("/");
@@ -37,6 +40,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), user);
+        objectMapper.writeValue(response.getWriter(), userResponseDto);
     }
 }
