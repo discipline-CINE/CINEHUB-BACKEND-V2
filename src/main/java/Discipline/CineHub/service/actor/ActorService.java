@@ -3,8 +3,10 @@ package Discipline.CineHub.service.actor;
 import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
+import Discipline.CineHub.entity.actor.ActorRecommendationDto;
 import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.request.actor.ActorRequest;
+import Discipline.CineHub.service.external.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import java.util.Optional;
 public class ActorService {
   @Autowired
   private ActorRepository actorRepository;
+
+  @Autowired
+  private RecommendationService recommendationService;
 
   //Id로 배우 삭제
   @Transactional
@@ -51,4 +56,9 @@ public class ActorService {
     return actorRepository.findByUser_Username(username);
   }
 
+  public ActorRecommendationDto getActorWithRecommendations(String username) {
+    Actor actor = getByUsername(username);
+    List<String> recommendationUrls = recommendationService.getUrlsByActorThumbnail(actor.getThumbnailId());
+    return new ActorRecommendationDto(actor, recommendationUrls);
+  }
 }

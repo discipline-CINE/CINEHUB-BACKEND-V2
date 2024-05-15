@@ -4,6 +4,7 @@ import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.dto.actor.ThumbnailDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
+import Discipline.CineHub.entity.actor.ActorRecommendationDto;
 import Discipline.CineHub.entity.actor.GenderType;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
@@ -115,8 +116,8 @@ public class ActorController {
   }
 
   @GetMapping("/find-Actor/{username}")
-  public Actor findByUsername(@PathVariable String username){
-    return actorService.getByUsername(username);
+  public ActorRecommendationDto findByUsername(@PathVariable String username) {
+    return actorService.getActorWithRecommendations(username);
   }
 
 

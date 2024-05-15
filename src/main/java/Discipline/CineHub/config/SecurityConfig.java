@@ -24,7 +24,9 @@ import org.springframework.security.web.context.RequestAttributeSecurityContextR
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +49,10 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
+            // 배포시 localhost:3000은 Front-end URL로, localhost:5000은 Back-end Flask URL로 수정
+            // http말고 https로 지정해야함! ! ! 주의
+            List<String> allowedOrigins = Arrays.asList("http://localhost:3000", "http://localhost:5000");
+            config.setAllowedOriginPatterns(allowedOrigins);
             config.setAllowCredentials(true);
             return config;
         };
