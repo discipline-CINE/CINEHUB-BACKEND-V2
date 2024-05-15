@@ -32,6 +32,5 @@ public class FlaskService {
         // Flask 서버로 데이터 전송 후 response return
         return restTemplate.postForObject(url, entity, String.class);
 
-
     }
 }
