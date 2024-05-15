@@ -66,14 +66,22 @@ public class MyPageController {
   }
 
   // 마이페이지 : 유저의 ROLE 확인
-  @GetMapping("/my-role/{username}")
-  public String checkMyRole(@PathVariable("username") String username){
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if (authentication == null || authentication.getPrincipal() == null) {
-//      new RuntimeException("마이페이지 오류입니다.");
-//    }
-    return userService.checkMyRole(username);
+  @GetMapping("/my-role")
+  public String checkMyRole() {
+    String loggedInUsername = UserService.getLoggedInUsername();
+    if(loggedInUsername == null){
+      throw new RuntimeException("해당 유저가 없습니다.");
+    }
+    return userService.checkMyRole(loggedInUsername);
   }
+//  @GetMapping("/my-role/{username}")
+//  public String checkMyRole(@PathVariable("username") String username){
+////    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////    if (authentication == null || authentication.getPrincipal() == null) {
+////      new RuntimeException("마이페이지 오류입니다.");
+////    }
+//    return userService.checkMyRole(username);
+//  }
 
   // 마에페이지 : 전문가 - 예약 조회
   @GetMapping("/check-reservation-expert/{username}")
