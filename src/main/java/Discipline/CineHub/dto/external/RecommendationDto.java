@@ -2,21 +2,33 @@ package Discipline.CineHub.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class RecommendationDto {
+
+    private Long id;
+
+    @JsonProperty("inputImage")
+    private String inputImage;
+
+    @JsonProperty("url")
+    private String url;
 
     @JsonProperty("imagePath")
     private String imagePath;
 
     @JsonProperty("distance")
-    private double distance;
+    private Double distance;
 
-    @JsonProperty("url")
-    private String url;
-
-    @JsonProperty("input_image")
-    private String inputImage;
+    public RecommendationDto(Long id, @JsonProperty("inputImage") String inputImage, @JsonProperty("url") String url) {
+        this.id = id;
+        this.inputImage = inputImage;
+        this.url = url;
+    }
 }

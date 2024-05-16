@@ -39,7 +39,7 @@ public class Actor{
   @Setter @Column(nullable = false) private Double weight;
   @Setter private String content;
   @Setter private String sns;
-  @Setter @Column(nullable = true) private URL ThumbnailId;
+  @Setter @Column(nullable = true) private URL thumbnailId;
   @Setter private String username;
 
   @Setter
@@ -61,7 +61,7 @@ public class Actor{
     this.weight = weight;
     this.content = content;
     this.sns = sns;
-    ThumbnailId = thumbnailId;
+    this.thumbnailId = thumbnailId;
   }
 
   //id가 null 일 수도 있다. 따라서 null 인지도 비교해줘야 한다.

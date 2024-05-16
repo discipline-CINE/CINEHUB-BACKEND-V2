@@ -2,10 +2,9 @@ package Discipline.CineHub.repository.actor;
 
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.QActor;
+import Discipline.CineHub.entity.external.RecommendationEntity;
 import com.querydsl.core.types.dsl.StringExpression;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
@@ -38,4 +37,5 @@ public interface ActorRepository extends
   Optional<Actor> findById(Long id);
 
   Actor findByUser_Username(String username);
+  Actor findByThumbnailId(URL thumbnailId); // 새로운 메소드 추가
 }

@@ -38,7 +38,7 @@ public class QActor extends EntityPathBase<Actor> {
 
     public final StringPath sns = createString("sns");
 
-    public final SimplePath<java.net.URL> ThumbnailId = createSimple("ThumbnailId", java.net.URL.class);
+    public final SimplePath<java.net.URL> thumbnailId = createSimple("thumbnailId", java.net.URL.class);
 
     public final Discipline.CineHub.entity.QUserEntity user;
 
