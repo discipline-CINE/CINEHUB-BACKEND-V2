@@ -29,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -154,6 +151,7 @@ public class UserService {
       return userRepository.findByUsername(username);
   }
 
+    @Transactional
     public String connectUserAndActor(Long id, String username){
       Actor actor = actorService.getById(id);
 
@@ -162,19 +160,30 @@ public class UserService {
               .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
 
       userEntity.setActor(actor);
+      actor.setUsername(userEntity.getUsername());
 
       return userEntity.getActor().getName();
     }
 
-    @Transactional
+//    @Transactional
     public void changeToExpert(String username){
-      Optional<UserEntity> user = userRepository.findByUsername(username);
-      user.get().setRole("EXPERT");
+      System.out.println(username);
+      UserEntity user = userRepository.findByUsername(username)
+              .orElseThrow(
+                      () -> new RuntimeException("해당 유저가 없습니다.")
+              );
+      user.setRole("EXPERT");
     }
 
     public String checkMyRole(String username){
       Optional<UserEntity> user = userRepository.findByUsername(username);
-      return user.get().getRole();
+
+      if (user.isPresent()) {
+        return user.get().getRole();
+      }
+      else {
+        throw new NoSuchElementException("No user found");
+      }
     }
 
     public List<UserEntity> findAllUsers(){

@@ -1,10 +1,11 @@
 package Discipline.CineHub.controller.actor;
 
 import Discipline.CineHub.dto.actor.ActorDto;
+import Discipline.CineHub.dto.actor.AllActorDto;
 import Discipline.CineHub.dto.actor.ThumbnailDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
-import Discipline.CineHub.entity.actor.GenderType;
+import Discipline.CineHub.entity.actor.ActorComment;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
 import Discipline.CineHub.service.actor.StorageService;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,7 +51,7 @@ public class ActorController {
 
   // 모든 배우 조회
   @GetMapping("/all-actors")
-  public List<Actor> findAllActors(){
+  public List<AllActorDto> findAllActors(){
     return actorService.findAllActors();
   }
 
@@ -59,7 +61,7 @@ public class ActorController {
     Optional<Actor> actor = getActorById(id);
 
     String name = actorRequest.getName();
-    GenderType gender = actorRequest.getGender();
+    String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
     Double height = actorRequest.getHeight();
     Double weight = actorRequest.getWeight();
@@ -84,11 +86,12 @@ public class ActorController {
     return actor;
   }
 
-  //배우 등록
+//  배우 등록
+  @Transactional
   @PostMapping("/upload")
   public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException{
     String name = actorRequest.getName();
-    GenderType gender = actorRequest.getGender();
+    String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
     Double height = actorRequest.getHeight();
     Double weight = actorRequest.getWeight();
@@ -114,14 +117,30 @@ public class ActorController {
     return thumbnailId;
   }
 
+  // Username으로 각 배우 게시판 점근
   @GetMapping("/find-Actor/{username}")
-  public Actor findByUsername(@PathVariable String username){
+  public AllActorDto findByUsername(@PathVariable String username){
     return actorService.getByUsername(username);
   }
-
 
   // ID로 배우 정보 가져오기
   public Optional<Actor> getActorById(Long id){
     return actorService.findById(id);
+  }
+
+  // 댓글 등록
+  @PostMapping("/post-comment")
+  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment){
+    Actor actor = actorService.findById(actorId).orElseThrow(
+            () -> new RuntimeException("해당하는 유저가 없습니다.")
+    );
+    actorService.postComment(new ActorComment(actor, comment));
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @GetMapping("/search-actors/{keyword}")
+  public ResponseEntity<List<Actor>> searchActors(@PathVariable String keyword) {
+    List<Actor> actors = actorService.searchActorsByName(keyword);
+    return ResponseEntity.ok(actors);
   }
 }

@@ -24,7 +24,7 @@ public class ActorComment{
 
   protected ActorComment() {}
 
-  private ActorComment(Actor actor, String content) { //factory 메서드 구현
+  public ActorComment(Actor actor, String content) { //factory 메서드 구현
     this.actor = actor;
     this.content = content;
   }

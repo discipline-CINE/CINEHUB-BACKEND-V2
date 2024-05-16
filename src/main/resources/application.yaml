@@ -86,7 +86,7 @@ spring:
     sql.init.mode: never
 
   data.rest:
-    base-path: /actor
+    base-path: /cine
     detection-strategy: annotated
 
 aws:
