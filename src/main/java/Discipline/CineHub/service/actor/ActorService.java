@@ -1,6 +1,7 @@
 package Discipline.CineHub.service.actor;
 
 import Discipline.CineHub.dto.actor.ActorDto;
+import Discipline.CineHub.dto.actor.ActorRecommendationDto;
 import Discipline.CineHub.dto.actor.AllActorDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
@@ -9,6 +10,7 @@ import Discipline.CineHub.entity.actor.QActor;
 import Discipline.CineHub.repository.actor.ActorCommentRepository;
 import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.request.actor.ActorRequest;
+import Discipline.CineHub.service.external.RecommendationService;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,9 @@ public class ActorService {
   @Autowired
   private ActorCommentRepository actorCommentRepository;
 
+  @Autowired
+  private RecommendationService recommendationService;
+
   //Id로 배우 삭제
   @Transactional
   public void deleteById(Long id){
@@ -60,7 +65,9 @@ public class ActorService {
               actor.getName(), actor.getGender(),
               actor.getBirth(), actor.getHeight(),
               actor.getWeight(), actor.getThumbnailId(),
-              actor.getUser().getUsername());
+              actor.getUser().getUsername(),
+              new ArrayList<>()
+      );
 
       allActorDtos.add(allActorDto);
     }
@@ -73,16 +80,19 @@ public class ActorService {
 
   public Actor getById(Long id){return actorRepository.getById(id);}
 
-  public AllActorDto getByUsername(String username){
+  public AllActorDto getByUsername(String username) {
     Actor actor = actorRepository.findByUser_Username(username);
+    List<String> recommendationUrls = recommendationService.getUrlsByActorThumbnail(actor.getThumbnailId());
     AllActorDto allActorDto = new AllActorDto(
             actor.getId(), actor.getName(), actor.getGender(),
             actor.getBirth(), actor.getHeight(), actor.getWeight(),
-            actor.getThumbnailId(), actor.getUsername()
+            actor.getThumbnailId(), actor.getUsername(),
+            recommendationUrls
     );
 
     return allActorDto;
   }
+
 
   // 배우 댓글 저장
   public void postComment(ActorComment actorComment){

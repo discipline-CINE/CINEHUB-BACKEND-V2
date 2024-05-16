@@ -1,11 +1,13 @@
 package Discipline.CineHub.dto.actor;
 
 
+import Discipline.CineHub.entity.actor.Actor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.net.URL;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +21,9 @@ public class AllActorDto {
   Double weight;
   URL thumbnailId;
   String username;
+  List<String> recommendationUrls;
 
-  public AllActorDto(Long id, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username) {
+  public AllActorDto(Long id, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username, List<String> recommendationUrls) {
     this.id = id;
     this.name = name;
     this.gender = gender;
@@ -29,5 +32,6 @@ public class AllActorDto {
     this.weight = weight;
     this.thumbnailId = thumbnailId;
     this.username = username;
+    this.recommendationUrls = recommendationUrls;
   }
 }
