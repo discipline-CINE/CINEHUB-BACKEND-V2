@@ -1,7 +1,6 @@
 package Discipline.CineHub.dto.actor;
 
 import Discipline.CineHub.entity.actor.Actor;
-import Discipline.CineHub.entity.actor.GenderType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.net.URL;
 @Data
 public class ActorDto {
   private String name;
-  private GenderType gender;
+  private String gender;
   private Integer birth;
   private Double height;
   private Double weight;
@@ -34,7 +33,7 @@ public class ActorDto {
   }
 
   @Builder
-  public ActorDto(String name, GenderType gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
+  public ActorDto(String name, String gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;

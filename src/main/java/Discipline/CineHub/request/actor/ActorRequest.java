@@ -1,6 +1,6 @@
 package Discipline.CineHub.request.actor;
 
-import Discipline.CineHub.entity.actor.GenderType;
+
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ public class ActorRequest {
   @NotEmpty
   private String name;
   @NotEmpty
-  private GenderType gender;
+  private String gender;
   @NotEmpty
   private Integer birth;
   @NotEmpty

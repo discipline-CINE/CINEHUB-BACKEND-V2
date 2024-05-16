@@ -33,13 +33,14 @@ public class Actor{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;  //id(pk)
   @Setter @Column(nullable = false) private String name;
-  @Setter @Column(nullable = false) @Enumerated(EnumType.STRING) private GenderType gender;
+  @Setter @Column(nullable = false)  private String gender;
   @Setter @Column(nullable = false) private Integer birth;
   @Setter @Column(nullable = false) private Double height;
   @Setter @Column(nullable = false) private Double weight;
   @Setter private String content;
   @Setter private String sns;
   @Setter @Column(nullable = true) private URL ThumbnailId;
+  @Setter private String username;
 
   @Setter
   @OneToOne(mappedBy = "actor")
@@ -52,7 +53,7 @@ public class Actor{
   private final Set<ActorComment> actorComments = new LinkedHashSet<>();
 
   @Builder
-  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
+  public Actor(String name, String gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;
