@@ -3,7 +3,7 @@ management.endpoint.web.exposure.include: "*"
 
 server:
 #  port : 5000
-  port : 8081
+  port : 8080
 
 java:
   runtime:
