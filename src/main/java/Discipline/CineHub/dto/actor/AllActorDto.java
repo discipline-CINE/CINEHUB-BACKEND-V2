@@ -1,6 +1,7 @@
 package Discipline.CineHub.dto.actor;
 
 
+import Discipline.CineHub.dto.external.RecommendationResponse;
 import Discipline.CineHub.entity.actor.Actor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,9 @@ public class AllActorDto {
   Double weight;
   URL thumbnailId;
   String username;
-  List<String> recommendationUrls;
+  List<RecommendationResponse> recommendationUrls;
 
-  public AllActorDto(Long id, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username, List<String> recommendationUrls) {
+  public AllActorDto(Long id, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username, List<RecommendationResponse> recommendationUrls) {
     this.id = id;
     this.name = name;
     this.gender = gender;

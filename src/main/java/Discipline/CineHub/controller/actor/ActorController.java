@@ -120,7 +120,7 @@ public class ActorController {
   // Username으로 각 배우 게시판 점근
   @GetMapping("/find-Actor/{username}")
   public AllActorDto findByUsername(@PathVariable String username){
-    return actorService.getByUsername(username);
+    return actorService.getByUsernameWithRecommendations(username);
   }
 
   // ID로 배우 정보 가져오기

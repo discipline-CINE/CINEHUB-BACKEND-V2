@@ -30,7 +30,7 @@ app.config.update(
     beat_schedule={
         'process-images-every-hour': {
             'task': 'download_and_process_images_task',
-            'schedule': crontab(minute=40, hour='*'),
+            'schedule': crontab(minute=00, hour='*'),
         },
     },
 )
