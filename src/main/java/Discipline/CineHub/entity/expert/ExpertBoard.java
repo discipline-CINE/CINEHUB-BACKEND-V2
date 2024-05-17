@@ -4,6 +4,7 @@ import Discipline.CineHub.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class ExpertBoard {
   Long id;
   String title;
   String type;
+  @Lob
   String content;
   URL thumbnail;
   // Standard 가격

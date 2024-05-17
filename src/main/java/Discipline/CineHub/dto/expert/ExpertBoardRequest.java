@@ -1,5 +1,7 @@
 package Discipline.CineHub.dto.expert;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +19,7 @@ public class ExpertBoardRequest {
   int dPrice;
   int pPrice;
   String type;
-  String content;
+  @Size(max = 50000) @Column(nullable = false, length = 50000) String content;
   MultipartFile thumbnailImg;
-  List<MultipartFile> imgs;
   List<List<String>> priceFeats;
 }

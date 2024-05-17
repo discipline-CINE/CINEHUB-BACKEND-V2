@@ -60,17 +60,6 @@ public class ExpertBoardController {
               priceFeatDtos
       );
 
-      if(!(expertBoardRequest.getImgs().isEmpty())){
-        List<MultipartFile> imgs = expertBoardRequest.getImgs();
-        List<URL> imgUrl = new ArrayList<>();
-
-        for(MultipartFile img : imgs){
-          URL tmp = expertBoardStorageService.uploadFile(img);
-          imgUrl.add(tmp);
-        }
-        expertBoardDto.setImgs(imgUrl);
-      }
-
       expertBoardService.enrollExpertBoard(expertBoardDto, user.get());
     }
   }
