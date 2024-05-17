@@ -142,9 +142,9 @@ public class ActorService {
                 // 추천 URL을 thumbnailId로 가지고 있는 Actor 조회
                 Actor recommendedActor = actorRepository.findByThumbnailId(recommendationUrl);
                 if (recommendedActor != null) {
-                  return new RecommendationResponse(recommendedActor.getId(), recommendationUrl.toString());
+                  return new RecommendationResponse(recommendedActor.getId(), recommendedActor.getUsername(), recommendedActor.getName(), recommendationUrl.toString());
                 } else {
-                  return new RecommendationResponse(-1L, recommendationUrl.toString()); // 추천 배우가 없으면 -1 ID로 설정
+                  return new RecommendationResponse(-1L, null, null, recommendationUrl.toString()); // 추천 배우가 없으면 -1 ID로 설정
                 }
               } catch (MalformedURLException e) {
                 throw new RuntimeException("Invalid URL format: " + recommendation.getUrl(), e);
