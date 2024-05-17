@@ -10,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @ToString
@@ -51,7 +48,7 @@ public class Actor{
   @OrderBy("id")
   @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @ToString.Exclude //circular referencing 이슈 방지
-  private final Set<ActorComment> actorComments = new LinkedHashSet<>();
+  private final List<ActorComment> actorComments = new ArrayList<>();
 
   @Builder
   public Actor(String name, String gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {

@@ -22,6 +22,7 @@ public class ExpertBoardService {
   @Autowired ExpertBoardRepository expertBoardRepository;
   @Autowired PriceFeatService priceFeatService;
 
+  @Transactional
   public void enrollExpertBoard(ExpertBoardDto expertBoardDto, UserEntity user){
     String title =  expertBoardDto.getTitle();
     int sPrice = expertBoardDto.getSPrice();
@@ -30,7 +31,7 @@ public class ExpertBoardService {
     String type = expertBoardDto.getType();
     String content = expertBoardDto.getContent();
     URL thumbnail = expertBoardDto.getThumbnail();
-//    List<URL> imgs = expertBoardDto.getImgs();
+
     List<PriceFeatDto> priceFeatDtos = expertBoardDto.getPriceFeatDtos();
     List<PriceFeat> priceFeats = new ArrayList<>();
 
@@ -43,7 +44,6 @@ public class ExpertBoardService {
     expertBoard.setContent(content);
     expertBoard.setThumbnail(thumbnail);
     expertBoard.setUser(user);
-//    expertBoard.setImgs(imgs);
 
     for (PriceFeatDto priceFeatDto : priceFeatDtos){
       PriceFeat pf = priceFeatService.addPriceFeat(priceFeatDto);
@@ -51,7 +51,13 @@ public class ExpertBoardService {
     }
     expertBoard.setPriceFeats(priceFeats);
 
-    expertBoardRepository.save(expertBoard);
+    ExpertBoard saveExpertBoard = expertBoardRepository.save(expertBoard);
+
+    // ID가 생성된 후 eId 설정
+    saveExpertBoard.setEId(saveExpertBoard.getId());
+
+    // 업데이트된 expertBoard 저장
+    expertBoardRepository.save(saveExpertBoard);
   }
 
   @Transactional

@@ -68,14 +68,21 @@ public class ActorService {
   public List<AllActorDto> findAllActors(){
     List<Actor> actors = actorRepository.findAll();
     List<AllActorDto> allActorDtos = new ArrayList<>();
+    List<String> comments = new ArrayList<>();
 
     for(Actor actor : actors){
-      AllActorDto allActorDto = new AllActorDto(actor.getId(),
+
+      List<ActorComment> actorComments = actor.getActorComments();
+      for(ActorComment ac : actorComments){
+        comments.add(ac.getContent());
+      }
+
+      AllActorDto allActorDto = new AllActorDto(actor.getId(), actor.getContent(), actor.getSns(),
               actor.getName(), actor.getGender(),
               actor.getBirth(), actor.getHeight(),
               actor.getWeight(), actor.getThumbnailId(),
               actor.getUser().getUsername(),
-              new ArrayList<>()
+              new ArrayList<>(), comments
       );
 
       allActorDtos.add(allActorDto);
@@ -152,11 +159,16 @@ public class ActorService {
             })
             .collect(Collectors.toList());
 
+    List<String> comments = new ArrayList<>();
+    for(ActorComment ac : actor.getActorComments()){
+      comments.add(ac.getContent());
+    }
+
     // Actor 정보와 추천 목록을 AllActorDto에 설정
     AllActorDto allActorDto = new AllActorDto(
-            actor.getId(), actor.getName(), actor.getGender(),
+            actor.getId(), actor.getContent(), actor.getSns(),actor.getName(), actor.getGender(),
             actor.getBirth(), actor.getHeight(), actor.getWeight(),
-            actor.getThumbnailId(), actor.getUsername(), recommendationResponses
+            actor.getThumbnailId(), actor.getUsername(), recommendationResponses,comments
     );
 
     return allActorDto;
