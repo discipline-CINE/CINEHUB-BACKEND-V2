@@ -26,6 +26,8 @@ public class QExpertBoard extends EntityPathBase<ExpertBoard> {
 
     public final NumberPath<Integer> dPrice = createNumber("dPrice", Integer.class);
 
+    public final NumberPath<Long> eId = createNumber("eId", Long.class);
+
     public final ListPath<ExpertComment, QExpertComment> expertComments = this.<ExpertComment, QExpertComment>createList("expertComments", ExpertComment.class, QExpertComment.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

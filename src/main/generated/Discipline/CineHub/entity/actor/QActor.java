@@ -22,7 +22,7 @@ public class QActor extends EntityPathBase<Actor> {
 
     public static final QActor actor = new QActor("actor");
 
-    public final SetPath<ActorComment, QActorComment> actorComments = this.<ActorComment, QActorComment>createSet("actorComments", ActorComment.class, QActorComment.class, PathInits.DIRECT2);
+    public final ListPath<ActorComment, QActorComment> actorComments = this.<ActorComment, QActorComment>createList("actorComments", ActorComment.class, QActorComment.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> birth = createNumber("birth", Integer.class);
 

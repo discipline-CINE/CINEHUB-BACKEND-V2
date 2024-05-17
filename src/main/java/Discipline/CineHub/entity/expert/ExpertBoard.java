@@ -23,6 +23,7 @@ public class ExpertBoard {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
+  private Long eId;
   String title;
   String type;
   @Lob
