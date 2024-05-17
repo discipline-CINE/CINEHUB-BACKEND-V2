@@ -5,6 +5,10 @@ server:
   port : 5000
 #  port : 8080
 
+java:
+  runtime:
+    version: 17
+
 logging:
   level:
     ToMist.SpringBoard: debug
