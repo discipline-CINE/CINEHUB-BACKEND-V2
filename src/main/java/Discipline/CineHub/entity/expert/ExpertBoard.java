@@ -43,7 +43,7 @@ public class ExpertBoard {
 
   @JsonManagedReference
   @ToString.Exclude
-  @OneToMany(mappedBy="expertBoard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy="expertBoard", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   List<Reservation> reservations;
 
   @OneToMany(fetch = FetchType.EAGER)
