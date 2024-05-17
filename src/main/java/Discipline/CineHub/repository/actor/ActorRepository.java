@@ -27,8 +27,9 @@ public interface ActorRepository extends
   @Override
   default void customize(QuerydslBindings bindings, QActor root){
     bindings.excludeUnlistedProperties(true);
-    bindings.including(root.name);
+    bindings.including(root.name, root.gender);
     bindings.bind(root.name).first(StringExpression::containsIgnoreCase);
+    bindings.bind(root.gender).first((path, value) -> path.eq(value));
   }
 
   Optional<Actor> findById(Long id);

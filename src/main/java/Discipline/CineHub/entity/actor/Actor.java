@@ -3,6 +3,7 @@ package Discipline.CineHub.entity.actor;
 import Discipline.CineHub.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,7 +38,7 @@ public class Actor{
   @Setter @Column(nullable = false) private Integer birth;
   @Setter @Column(nullable = false) private Double height;
   @Setter @Column(nullable = false) private Double weight;
-  @Setter private String content;
+  @Setter @Size(max = 5000) @Column(nullable = false, length = 5000) private String content;
   @Setter private String sns;
   @Setter @Column(nullable = true) private URL ThumbnailId;
   @Setter private String username;

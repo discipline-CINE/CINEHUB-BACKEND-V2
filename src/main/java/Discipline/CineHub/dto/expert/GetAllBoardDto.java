@@ -1,6 +1,8 @@
 package Discipline.CineHub.dto.expert;
 
 import Discipline.CineHub.entity.expert.PriceFeat;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +20,7 @@ public class GetAllBoardDto {
   int dPrice;
   int pPrice;
   String type;
-  String content;
+  @Size(max = 50000) @Column(nullable = false, length = 50000) String content;
   URL thumbnail;
   List<PriceFeatDto> priceFeats;
 

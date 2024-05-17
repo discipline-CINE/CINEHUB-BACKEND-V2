@@ -15,6 +15,11 @@ image:
   path: /Users/dongik/Documents/etc/file/
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   mail:
     host: smtp.naver.com
     port: 465
