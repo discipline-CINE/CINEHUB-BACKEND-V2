@@ -11,11 +11,9 @@ import java.util.Objects;
 @ToString
 @Table(indexes = {
         @Index(columnList = "content"),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
 })
 @Entity
-public class ActorComment extends ActorAuditingFields{
+public class ActorComment{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -26,7 +24,7 @@ public class ActorComment extends ActorAuditingFields{
 
   protected ActorComment() {}
 
-  private ActorComment(Actor actor, String content) { //factory 메서드 구현
+  public ActorComment(Actor actor, String content) { //factory 메서드 구현
     this.actor = actor;
     this.content = content;
   }

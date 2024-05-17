@@ -1,8 +1,16 @@
 package Discipline.CineHub.entity.actor;
 
+import Discipline.CineHub.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.net.URL;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,46 +24,45 @@ import java.util.Set;
         @Index(columnList = "birth"),
         @Index(columnList = "height"),
         @Index(columnList = "weight"),
-        @Index(columnList = "specialty"),
-        @Index(columnList = "career"),
         @Index(columnList = "content"),
+        @Index(columnList = "sns"),
         @Index(columnList = "thumbnail")
 })
 @Entity
-public class Actor extends ActorAuditingFields{
+public class Actor{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;  //id(pk)
-
-  @Setter
-  @Column(nullable = false) private String name;
-  @Setter @Column(nullable = false) @Enumerated(EnumType.STRING) private GenderType gender;
+  @Setter @Column(nullable = false) private String name;
+  @Setter @Column(nullable = false)  private String gender;
   @Setter @Column(nullable = false) private Integer birth;
   @Setter @Column(nullable = false) private Double height;
   @Setter @Column(nullable = false) private Double weight;
+  @Setter @Size(max = 5000) @Column(nullable = false, length = 5000) private String content;
+  @Setter private String sns;
+  @Setter @Column(nullable = true) private URL thumbnailId;
+  @Setter private String username;
 
-  private String specialty;
-  private String career;
-  private String content;
-
-  @Column(nullable = true) private Long ThumbnailId;
+  @Setter
+  @OneToOne(mappedBy = "actor")
+  @JsonManagedReference
+  private UserEntity user;
 
   @OrderBy("id")
-  @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @ToString.Exclude //circular referencing 이슈 방지
   private final Set<ActorComment> actorComments = new LinkedHashSet<>();
 
   @Builder
-  public Actor(String name, GenderType gender, Integer birth, Double height, Double weight, String specialty, String career, String content, Long thumbnailId) {
+  public Actor(String name, String gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {
     this.name = name;
     this.gender = gender;
     this.birth = birth;
     this.height = height;
     this.weight = weight;
-    this.specialty = specialty;
-    this.career = career;
     this.content = content;
-    ThumbnailId = thumbnailId;
+    this.sns = sns;
+    this.thumbnailId = thumbnailId;
   }
 
   //id가 null 일 수도 있다. 따라서 null 인지도 비교해줘야 한다.

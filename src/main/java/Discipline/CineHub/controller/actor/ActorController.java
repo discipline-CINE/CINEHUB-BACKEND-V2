@@ -1,83 +1,146 @@
 package Discipline.CineHub.controller.actor;
 
 import Discipline.CineHub.dto.actor.ActorDto;
+import Discipline.CineHub.dto.actor.AllActorDto;
 import Discipline.CineHub.dto.actor.ThumbnailDto;
+import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
-import Discipline.CineHub.entity.actor.GenderType;
+import Discipline.CineHub.entity.actor.ActorComment;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
+import Discipline.CineHub.service.actor.StorageService;
 import Discipline.CineHub.service.actor.ThumbnailService;
+import Discipline.CineHub.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/actor")
 public class ActorController {
   private final ActorService actorService;
-  private final ThumbnailService thumbnailService;
+  private StorageService service;
+  private UserService userService;
 
-  //배우 삭제
-  @PostMapping("/delete-actor")
+  @Autowired
+  public ActorController(ActorService actorService, StorageService service, UserService userService) {
+    this.actorService = actorService;
+    this.service = service;
+    this.userService = userService;
+  }
+
+  // 배우 삭제
+  @DeleteMapping("/delete-actor")
   public void deleteActorById(Long id){
     actorService.deleteById(id);
   }
 
-  //업로드 된 이미지가 저장될 장소 application.yaml에서 설정 가능
-  @Value("${image.path}")
-  private String uploadDir;
-
+  // 모든 배우 조회
   @GetMapping("/all-actors")
-  public List<Actor> findAllActors(){
+  public List<AllActorDto> findAllActors(){
     return actorService.findAllActors();
   }
 
-  @PostMapping("/actor")
-  public void saveFormRequests(ActorRequest actorRequest) throws IOException {
+  // 배우 수정
+  @PutMapping("/update-actor/{id}")
+  public Optional<Actor> updateActorById(@PathVariable Long id, ActorRequest actorRequest){
+    Optional<Actor> actor = getActorById(id);
+
     String name = actorRequest.getName();
-    GenderType gender = actorRequest.getGender();
+    String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
     Double height = actorRequest.getHeight();
     Double weight = actorRequest.getWeight();
-    String specialty = actorRequest.getSpecialty();
-    String career = actorRequest.getCareer();
     String content = actorRequest.getContent();
+    String sns = actorRequest.getSns();
+    MultipartFile file = actorRequest.getFile();
+
+    URL thumbnailId = service.uploadFile(file);
+
     ActorDto actorDto = ActorDto.builder()
             .name(name)
             .gender(gender)
             .birth(birth)
             .height(height)
             .weight(weight)
-            .specialty(specialty)
-            .career(career)
             .content(content)
+            .sns(sns)
+            .thumbnailId(thumbnailId)
             .build();
-
-    if(actorRequest.getFile() != null){
-      MultipartFile file = actorRequest.getFile();
-      String fullPath = uploadDir + file.getOriginalFilename();
-      file.transferTo(new File(fullPath));
-      log.info("file.getOriginalFilename = {}", file.getOriginalFilename());
-      log.info("fullPath = {}", fullPath);
-
-      ThumbnailDto thumbnailDto = ThumbnailDto.builder()
-              .originFileName(file.getOriginalFilename())
-              .fullPath(uploadDir + file.getOriginalFilename())
-              .build();
-      Long savedFileId = thumbnailService.save(thumbnailDto);
-      actorDto.setThumbnailId(savedFileId);
-    }
     actorService.save(actorDto);
+
+    return actor;
+  }
+
+//  배우 등록
+  @Transactional
+  @PostMapping("/upload")
+  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException{
+    String name = actorRequest.getName();
+    String gender = actorRequest.getGender();
+    Integer birth = actorRequest.getBirth();
+    Double height = actorRequest.getHeight();
+    Double weight = actorRequest.getWeight();
+    String content = actorRequest.getContent();
+    String sns = actorRequest.getSns();
+    MultipartFile file = actorRequest.getFile();
+
+    URL thumbnailId = service.uploadFile(file);
+
+    ActorDto actorDto = ActorDto.builder()
+            .name(name)
+            .gender(gender)
+            .birth(birth)
+            .height(height)
+            .weight(weight)
+            .content(content)
+            .sns(sns)
+            .thumbnailId(thumbnailId)
+            .build();
+    Long actorId = actorService.save(actorDto);
+    userService.connectUserAndActor(actorId, username);
+
+    return thumbnailId;
+  }
+
+  // Username으로 각 배우 게시판 점근
+  @GetMapping("/find-Actor/{username}")
+  public AllActorDto findByUsername(@PathVariable String username){
+    return actorService.getByUsernameWithRecommendations(username);
+  }
+
+  // ID로 배우 정보 가져오기
+  public Optional<Actor> getActorById(Long id){
+    return actorService.findById(id);
+  }
+
+  // 댓글 등록
+  @PostMapping("/post-comment")
+  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment){
+    Actor actor = actorService.findById(actorId).orElseThrow(
+            () -> new RuntimeException("해당하는 유저가 없습니다.")
+    );
+    actorService.postComment(new ActorComment(actor, comment));
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @GetMapping("/search-actors/{keyword}")
+  public ResponseEntity<List<Actor>> searchActors(@PathVariable String keyword) {
+    List<Actor> actors = actorService.searchActorsByName(keyword);
+    return ResponseEntity.ok(actors);
   }
 }

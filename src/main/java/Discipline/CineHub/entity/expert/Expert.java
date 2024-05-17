@@ -1,6 +1,7 @@
 package Discipline.CineHub.entity.expert;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class Expert {
   private Long id;
   private boolean isBooked = false;
   private String expertType;
-  private String summary;
+  private @Size(max = 50000) @Column(nullable = false, length = 50000) String summary;
   @Lob private Blob thumbnail;
   @OneToMany(mappedBy = "expert", fetch = FetchType.LAZY, cascade = CascadeType.ALL) private List<BookedExpert> bookings;
 

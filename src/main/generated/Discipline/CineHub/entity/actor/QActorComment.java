@@ -22,19 +22,11 @@ public class QActorComment extends EntityPathBase<ActorComment> {
 
     public static final QActorComment actorComment = new QActorComment("actorComment");
 
-    public final QActorAuditingFields _super = new QActorAuditingFields(this);
-
     public final QActor actor;
 
     public final StringPath content = createString("content");
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public QActorComment(String variable) {
         this(ActorComment.class, forVariable(variable), INITS);
@@ -54,7 +46,7 @@ public class QActorComment extends EntityPathBase<ActorComment> {
 
     public QActorComment(Class<? extends ActorComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.actor = inits.isInitialized("actor") ? new QActor(forProperty("actor")) : null;
+        this.actor = inits.isInitialized("actor") ? new QActor(forProperty("actor"), inits.get("actor")) : null;
     }
 
 }

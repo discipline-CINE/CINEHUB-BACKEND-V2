@@ -18,48 +18,53 @@ public class QActor extends EntityPathBase<Actor> {
 
     private static final long serialVersionUID = 1302329061L;
 
-    public static final QActor actor = new QActor("actor");
+    private static final PathInits INITS = PathInits.DIRECT2;
 
-    public final QActorAuditingFields _super = new QActorAuditingFields(this);
+    public static final QActor actor = new QActor("actor");
 
     public final SetPath<ActorComment, QActorComment> actorComments = this.<ActorComment, QActorComment>createSet("actorComments", ActorComment.class, QActorComment.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> birth = createNumber("birth", Integer.class);
 
-    public final StringPath career = createString("career");
-
     public final StringPath content = createString("content");
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
-    public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
+    public final StringPath gender = createString("gender");
 
     public final NumberPath<Double> height = createNumber("height", Double.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
-
     public final StringPath name = createString("name");
 
-    public final StringPath specialty = createString("specialty");
+    public final StringPath sns = createString("sns");
 
-    public final NumberPath<Long> ThumbnailId = createNumber("ThumbnailId", Long.class);
+    public final SimplePath<java.net.URL> thumbnailId = createSimple("thumbnailId", java.net.URL.class);
+
+    public final Discipline.CineHub.entity.QUserEntity user;
+
+    public final StringPath username = createString("username");
 
     public final NumberPath<Double> weight = createNumber("weight", Double.class);
 
     public QActor(String variable) {
-        super(Actor.class, forVariable(variable));
+        this(Actor.class, forVariable(variable), INITS);
     }
 
     public QActor(Path<? extends Actor> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QActor(PathMetadata metadata) {
-        super(Actor.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QActor(PathMetadata metadata, PathInits inits) {
+        this(Actor.class, metadata, inits);
+    }
+
+    public QActor(Class<? extends Actor> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new Discipline.CineHub.entity.QUserEntity(forProperty("user"), inits.get("user")) : null;
     }
 
 }

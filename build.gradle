@@ -1,3 +1,15 @@
+buildscript {
+    ext {
+        springBootVersion = '3.2.3'  // Java 8과 호환되는 버전
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
@@ -15,7 +27,12 @@ repositories {
 	mavenCentral()
 }
 
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
 dependencies {
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.1'
 
@@ -82,4 +99,12 @@ sourceSets {
 // gradle clean 시에 QClass 디렉토리 삭제
 clean {
     delete file(generated)
+}
+
+bootJar{
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    destinationDirectory = file("./build/libs") //gradle build 시 jar 파일이 생성되는 파일명 및 위치를 설정한다.
+    archivesBaseName = 'CineHub'   //프로젝트이름
+    archiveFileName = 'CineHub.jar' //jar파일명
+    archiveVersion = "0.0.1"
 }
