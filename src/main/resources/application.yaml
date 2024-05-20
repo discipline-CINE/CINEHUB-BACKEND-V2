@@ -2,8 +2,8 @@ debug: false
 management.endpoint.web.exposure.include: "*"
 
 server:
-#  port : 5000
-  port : 8080
+  port : 5000
+#  port : 8080
 
 java:
   runtime:
@@ -42,7 +42,7 @@ spring:
     url: jdbc:mysql://discipline-rds.csqfm7ao5z48.ap-northeast-2.rds.amazonaws.com:3306/discipline
     username: admin
     password: discipline
-#
+
 #    url: jdbc:h2:mem:testdb
 #    username: sa
 #    driver-class-name: org.h2.Driver
