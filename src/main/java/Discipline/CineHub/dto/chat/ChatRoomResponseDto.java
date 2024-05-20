@@ -9,12 +9,14 @@ import lombok.Getter;
 public class ChatRoomResponseDto {
     private int roomNumber;
     private String nickname;
+    private String username;
     private String msg;
     private String messageCreatedDate;
 
     public ChatRoomResponseDto(ChatRoom chatRoom, String msg, String messageCreatedDate) {
         this.roomNumber = chatRoom.getRoomNumber();
         this.nickname = chatRoom.getOther().getUsername();
+        this.username = chatRoom.getMember().getUsername();
         this.msg = msg;
         this.messageCreatedDate = messageCreatedDate;
     }

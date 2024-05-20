@@ -1,0 +1,9 @@
+Flask==3.0.2
+celery==5.4.0
+boto3==1.34.74
+Werkzeug==3.0.1
+deepface==0.0.89
+pandas==2.0.3
+opencv-python==4.8.0.74
+requests==2.31.0
+requests-oauthlib==2.0.0
