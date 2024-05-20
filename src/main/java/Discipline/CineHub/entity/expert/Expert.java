@@ -18,7 +18,7 @@ import java.util.List;
 public class Expert {
   @Id
   @GeneratedValue
-  private Long id;;
+  private Long id;
   private boolean isBooked = false;
   private String expertType;
   private @Size(max = 50000) @Column(nullable = false, length = 50000) String summary;
