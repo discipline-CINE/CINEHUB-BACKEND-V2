@@ -110,10 +110,10 @@ public class MyPageController {
 
   // 댓글 등록 - 의뢰인
   @PostMapping("/expert-comment/{username}")
-  public String expertComment(@PathVariable("username") String username,String comment, Long expertBoardId){
+  public String expertComment(@PathVariable("username") String username,String comment, String expertBoardId){
     ExpertCommentDto expertCommentDto = new ExpertCommentDto();
 
-    ExpertBoard expertBoard = expertBoardService.getById(expertBoardId);
+    ExpertBoard expertBoard = expertBoardService.getById(Long.parseLong(expertBoardId));
 
 //    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Optional<UserEntity> user = userService.findByUsername(username);

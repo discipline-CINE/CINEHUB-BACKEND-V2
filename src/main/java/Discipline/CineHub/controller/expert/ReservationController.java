@@ -14,8 +14,8 @@ public class ReservationController {
   @Autowired ReservationService reservationService;
 
   @PostMapping("/create-reservation")
-  public void createReservation(Long expertBoardId, Long userId,ReservationDto reservationDto){
-    reservationService.createReservation(expertBoardId, userId ,reservationDto);
+  public void createReservation(String expertBoardId ,ReservationDto reservationDto){
+    reservationService.createReservation(expertBoardId, reservationDto);
   }
 
   @PostMapping("decide-reservation/{reservationId}")

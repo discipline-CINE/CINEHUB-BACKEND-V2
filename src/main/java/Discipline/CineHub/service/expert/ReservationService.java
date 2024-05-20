@@ -25,9 +25,10 @@ public class ReservationService {
   @Autowired ExpertBoardRepository expertBoardRepository;
   @Autowired UserRepository userRepository;
 
-  public void createReservation(Long expertBoardId, Long userId ,ReservationDto reservationDto){
-    Optional<ExpertBoard> board = expertBoardRepository.findById(expertBoardId);
-    Optional<UserEntity> user = userRepository.findById(userId);
+  public void createReservation(String expertBoardId, ReservationDto reservationDto){
+    Optional<ExpertBoard> board = expertBoardRepository.findById(Long.parseLong(expertBoardId));
+    UserEntity user = userRepository.findByUsername(reservationDto.getName())
+            .orElseThrow(() -> new RuntimeException("해당하는 유저가 없습니다."));
 
     Reservation reservation = new Reservation();
     reservation.setName(reservationDto.getName());
@@ -35,8 +36,9 @@ public class ReservationService {
     reservation.setEmail(reservationDto.getEmail());
     reservation.setConfirm(ConfirmType.PROCEED);
     reservation.setReservationDate(reservationDto.getReservationDate());
+
     reservation.setExpertBoard(board.get());
-    reservation.setUser(user.get());
+    reservation.setUser(user);
 
     reservationRepository.save(reservation);
   }

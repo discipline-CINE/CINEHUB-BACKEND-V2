@@ -26,7 +26,7 @@ public class ExpertBoard {
   private Long eId;
   String title;
   String type;
-  @Lob
+  @Column(nullable = false, length = 5000)
   String content;
   URL thumbnail;
   // Standard 가격

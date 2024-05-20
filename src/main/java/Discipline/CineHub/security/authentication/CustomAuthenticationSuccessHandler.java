@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 
@@ -22,23 +24,24 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     // final로 처리할 지 고민, 일단 문제 없음
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        UserEntity user = (UserEntity) authentication.getPrincipal();
+  @Override
+  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    UserEntity user = (UserEntity) authentication.getPrincipal();
 
-        UserResponseDto userResponseDto = new UserResponseDto(user);
+    UserResponseDto userResponseDto = new UserResponseDto(user);
 
-        // 쿠키 생성 및 설정
-        Cookie cookie = new Cookie("JSESSIONID", request.getSession().getId());
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        String cookieHeader = String.format("%s; SameSite=None", cookie.toString());
-        response.addHeader("Set-Cookie", cookieHeader);
+    ResponseCookie cookie = ResponseCookie.from("JSESSIONID", request.getSession().getId())
+            .path("/")
+            .httpOnly(true)
+            .secure(true)
+            .sameSite("None")
+            .build();
 
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        objectMapper.writeValue(response.getWriter(), userResponseDto);
-    }
+    response.setStatus(HttpStatus.OK.value());
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+    objectMapper.writeValue(response.getWriter(), userResponseDto);
+  }
 }
