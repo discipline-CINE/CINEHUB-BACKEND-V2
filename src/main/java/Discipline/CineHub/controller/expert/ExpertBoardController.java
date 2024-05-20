@@ -83,4 +83,9 @@ public class ExpertBoardController {
   public EachBoardDto getBoard(@PathVariable("id") Long id){
     return expertBoardService.findById(id);
   }
+
+  @DeleteMapping("/delete-board/{expertBoardId}")
+  public void deleteBoard(@PathVariable("expertBoardId") Long expertBoardId){
+    expertBoardService.deleteExpertBoardById(expertBoardId);
+  }
 }

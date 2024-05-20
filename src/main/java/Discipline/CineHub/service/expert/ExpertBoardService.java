@@ -2,10 +2,7 @@ package Discipline.CineHub.service.expert;
 
 import Discipline.CineHub.dto.expert.*;
 import Discipline.CineHub.entity.UserEntity;
-import Discipline.CineHub.entity.expert.ExpertBoard;
-import Discipline.CineHub.entity.expert.ExpertComment;
-import Discipline.CineHub.entity.expert.PriceFeat;
-import Discipline.CineHub.entity.expert.Reservation;
+import Discipline.CineHub.entity.expert.*;
 import Discipline.CineHub.repository.expert.ExpertBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,10 @@ import java.util.Optional;
 public class ExpertBoardService {
   @Autowired ExpertBoardRepository expertBoardRepository;
   @Autowired PriceFeatService priceFeatService;
+
+  public void deleteExpertBoardById(Long id){
+    expertBoardRepository.deleteById(id);
+  }
 
   @Transactional
   public void enrollExpertBoard(ExpertBoardDto expertBoardDto, UserEntity user){
@@ -67,16 +68,17 @@ public class ExpertBoardService {
     List<ReservationDto> reservationDtos = new ArrayList<>();
 
     for(Reservation reservation : reservations){
-      ReservationDto reservationDto = new ReservationDto(
-              reservation.getId(),
-              reservation.getName(),
-              reservation.getPhone(),
-              reservation.getEmail(),
-              reservation.getReservationDate(),
-              reservation.getConfirm()
-      );
-
-      reservationDtos.add(reservationDto);
+      if(!reservation.getConfirm().equals(ConfirmType.REJECT)){
+        ReservationDto reservationDto = new ReservationDto(
+                reservation.getId(),
+                reservation.getName(),
+                reservation.getPhone(),
+                reservation.getEmail(),
+                reservation.getReservationDate(),
+                reservation.getConfirm()
+        );
+        reservationDtos.add(reservationDto);
+      }
     }
     return reservationDtos;
   }

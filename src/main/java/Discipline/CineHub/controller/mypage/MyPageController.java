@@ -81,10 +81,6 @@ public class MyPageController {
   // 마에페이지 : 전문가 - 예약 조회
   @GetMapping("/check-reservation-expert/{username}")
   public List<ReservationDto> checkReservationByExp(@PathVariable("username") String username){
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if (authentication == null || authentication.getPrincipal() == null) {
-//      new RuntimeException("마이페이지 오류입니다.");
-//    }
       return myPageService.checkReservation(username);
   }
 

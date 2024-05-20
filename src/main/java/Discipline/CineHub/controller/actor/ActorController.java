@@ -143,4 +143,9 @@ public class ActorController {
     List<Actor> actors = actorService.searchActorsByName(keyword);
     return ResponseEntity.ok(actors);
   }
+
+  @DeleteMapping("/delete-actor/{username}")
+  public void deleteActorByUsername(@PathVariable String username){
+    actorService.deleteByUsername(username);
+  }
 }

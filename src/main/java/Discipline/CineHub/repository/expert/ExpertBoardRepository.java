@@ -27,7 +27,7 @@ public interface ExpertBoardRepository extends
   @Override
   default void customize(QuerydslBindings bindings, QExpertBoard root){
     bindings.excludeUnlistedProperties(true);
-    bindings.including(root.title);
+    bindings.including(root.title, root.type);
     bindings.bind(root.title).first(StringExpression::containsIgnoreCase);
   }
 }

@@ -39,17 +39,17 @@ spring:
             trust: smtp.naver.com
     auth-code-expiration-millis: 1800000
   datasource:
-#    url: jdbc:mysql://discipline-rds.csqfm7ao5z48.ap-northeast-2.rds.amazonaws.com:3306/discipline
-#    username: admin
-#    password: discipline
+    url: jdbc:mysql://discipline-rds.csqfm7ao5z48.ap-northeast-2.rds.amazonaws.com:3306/discipline
+    username: admin
+    password: discipline
 #
-    url: jdbc:h2:mem:testdb
-    username: sa
-    driver-class-name: org.h2.Driver
-    h2:
-      console:
-        enabled: true
-        path: /h2-console
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    driver-class-name: org.h2.Driver
+#    h2:
+#      console:
+#        enabled: true
+#        path: /h2-console
 
   security:
     oauth2:
