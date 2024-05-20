@@ -51,6 +51,11 @@ public class ActorService {
   @Autowired
   private RecommendationRepository recommendationRepository;
 
+  @Transactional
+  public void deleteByUsername(String username){
+    actorRepository.deleteActorByUsername(username);
+  }
+
   //Id로 배우 삭제
   @Transactional
   public void deleteById(Long id){
