@@ -60,9 +60,9 @@ public class ChatRoomController {
 
 
     //전체 조회
-    @GetMapping("/list")
-    public ResponseEntity<List<ChatRoomResponseDto>> findAll() {
-        List<ChatRoomResponseDto> roomResponseDtos = chatRoomService.findByList();
+    @GetMapping("/list/{username}")
+    public ResponseEntity<List<ChatRoomResponseDto>> findByUsername(@PathVariable String username) {
+        List<ChatRoomResponseDto> roomResponseDtos = chatRoomService.findByUsername(username);
         return ResponseEntity.ok(roomResponseDtos);
     }
 
