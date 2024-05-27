@@ -58,7 +58,7 @@ def process_image(input_img_path, images_folder_path, s3_base_url):
     df_list = df[['imagePath', 'distance', 'url', 'inputImage']].to_dict(orient='records')
 
     # Spring Boot 애플리케이션의 API 엔드포인트 URL
-    url = 'http://localhost:8080/api/recommendation'
+    url = 'https://www.cine-hub.top/api/recommendation'
 
     # JSON 리스트 전송
     response = requests.post(url, json=df_list, headers={'Content-Type': 'application/json'})
