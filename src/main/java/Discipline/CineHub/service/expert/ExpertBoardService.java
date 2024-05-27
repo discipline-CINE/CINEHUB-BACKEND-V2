@@ -62,6 +62,43 @@ public class ExpertBoardService {
   }
 
   @Transactional
+  public void updateExpertBoard(Long id, ExpertBoardDto expertBoardDto){
+    String title =  expertBoardDto.getTitle();
+    int sPrice = expertBoardDto.getSPrice();
+    int dPrice = expertBoardDto.getDPrice();
+    int pPrice = expertBoardDto.getPPrice();
+    String type = expertBoardDto.getType();
+    String content = expertBoardDto.getContent();
+    URL thumbnail = expertBoardDto.getThumbnail();
+
+    List<PriceFeatDto> priceFeatDtos = expertBoardDto.getPriceFeatDtos();
+    List<PriceFeat> priceFeats = new ArrayList<>();
+
+
+
+    ExpertBoard expertBoard = expertBoardRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당하는 유저가 없습니다."));
+
+    expertBoard.setTitle(title);
+    expertBoard.setSPrice(sPrice);
+    expertBoard.setDPrice(dPrice);
+    expertBoard.setPPrice(pPrice);
+    expertBoard.setType(type);
+    expertBoard.setContent(content);
+    expertBoard.setThumbnail(thumbnail);
+    expertBoard.setUser(expertBoard.getUser());
+    expertBoard.setEId(expertBoard.getEId());
+
+    for (PriceFeatDto priceFeatDto : priceFeatDtos){
+      PriceFeat pf = priceFeatService.addPriceFeat(priceFeatDto);
+      priceFeats.add(pf);
+    }
+    expertBoard.setPriceFeats(priceFeats);
+
+    expertBoardRepository.save(expertBoard);
+  }
+
+  @Transactional
   public List<ReservationDto> checkReservation(Long expertBoardId){
     Optional<ExpertBoard> board = expertBoardRepository.findById(expertBoardId);
     List<Reservation> reservations = board.get().getReservations();
@@ -144,7 +181,7 @@ public class ExpertBoardService {
     List<PriceFeat> priceFeats = expertBoard.get().getPriceFeats();
     List<PriceFeatDto> priceFeatDtos = new ArrayList<>();
 
-    List<String> comments = new ArrayList<>();
+    List<CommentWithId> comments = new ArrayList<>();
 
     for(PriceFeat priceFeat : priceFeats){
       PriceFeatDto priceFeatDto = new PriceFeatDto(priceFeat.getLabel(), priceFeat.getSFeat(), priceFeat.getDFeat(), priceFeat.getPFeat());
@@ -152,14 +189,17 @@ public class ExpertBoardService {
     }
 
     for(ExpertComment expertComment : expertComments){
-      String comm = expertComment.getComment();
-      comments.add(comm);
+      CommentWithId comment = new CommentWithId(
+              expertComment.getId(),
+              expertComment.getComment(),
+              expertComment.getUser().getUsername()
+      );
+      comments.add(comment);
     }
 
     String type = expertBoard.get().getType();
     String content = expertBoard.get().getContent();
     URL thumbnail = expertBoard.get().getThumbnail();
-//    List<URL> imgs = expertBoard.get().getImgs();
 
     boardDto.setId(id);
     boardDto.setUserId(userId);
@@ -173,7 +213,6 @@ public class ExpertBoardService {
     boardDto.setContent(content);
     boardDto.setExpertComments(comments);
     boardDto.setPriceFeats(priceFeatDtos);
-//    boardDto.setImgs(imgs);
 
     return boardDto;
   }

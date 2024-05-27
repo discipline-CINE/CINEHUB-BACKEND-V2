@@ -14,6 +14,6 @@ import java.util.List;
 public class EachBoardDto extends GetAllBoardDto{
   String username;
   Long userId;
-  List<String> expertComments;
+  List<CommentWithId> expertComments;
   List<URL> imgs;
 }

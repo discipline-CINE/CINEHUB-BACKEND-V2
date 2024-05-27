@@ -110,8 +110,6 @@ public class MyPageController {
     ExpertCommentDto expertCommentDto = new ExpertCommentDto();
 
     ExpertBoard expertBoard = expertBoardService.getById(Long.parseLong(expertBoardId));
-
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Optional<UserEntity> user = userService.findByUsername(username);
 
     expertCommentDto.setComment(comment);
@@ -120,6 +118,13 @@ public class MyPageController {
 
     return myPageService.expertComment(expertCommentDto);
   }
+
+  @DeleteMapping("/expert-comment/{id}")
+  public ResponseEntity<Void> deleteExpertComment(@PathVariable Long id) {
+    myPageService.deleteCommentById(id);
+    return ResponseEntity.noContent().build();
+  }
+
 }
 
 

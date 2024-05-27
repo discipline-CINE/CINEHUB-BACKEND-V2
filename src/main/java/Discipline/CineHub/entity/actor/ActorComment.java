@@ -1,5 +1,7 @@
 package Discipline.CineHub.entity.actor;
 
+import Discipline.CineHub.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,19 +20,21 @@ public class ActorComment{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Setter
-  @ManyToOne(optional = false) private Actor actor;
+  @Setter @ManyToOne(optional = false) private Actor actor;
   @Setter @Column(nullable = false, length = 500) private String content;
+  @Setter String username;
+  @Setter Long aId;
 
   protected ActorComment() {}
 
-  public ActorComment(Actor actor, String content) { //factory 메서드 구현
+  public ActorComment(Actor actor, String content, String username) { //factory 메서드 구현
     this.actor = actor;
     this.content = content;
+    this.username = username;
   }
 
-  public static ActorComment of(Actor actor, String content){
-    return new ActorComment(actor, content);
+  public static ActorComment of(Actor actor, String content, String username){
+    return new ActorComment(actor, content, username);
   }
 
   @Override
