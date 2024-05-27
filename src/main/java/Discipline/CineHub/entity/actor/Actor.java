@@ -29,7 +29,7 @@ import java.util.*;
 public class Actor{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;  //id(pk)
+  @Setter private Long id;  //id(pk)
   @Setter @Column(nullable = false) private String name;
   @Setter @Column(nullable = false)  private String gender;
   @Setter @Column(nullable = false) private Integer birth;

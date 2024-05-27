@@ -9,6 +9,7 @@ import Discipline.CineHub.service.expert.ReservationService;
 import Discipline.CineHub.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +52,32 @@ public class MyPageService {
     expertComment.setExpertBoard(expertCommentDto.getExpertBoard());
     expertComment.setUser(expertCommentDto.getUser());
 
-    expertCommentRepository.save(expertComment);
+    ExpertComment savedExpertComment = expertCommentRepository.save(expertComment);
+
 
     return expertCommentDto.getComment();
   }
 
-//  public List<GetExpertCommentDto> getMyComment(String username){
-//    List<GetExpertCommentDto> getExpertCommentDtos = new ArrayList<>();
-//
-//
-//  }
+  @Transactional
+  public void deleteCommentById(Long id){
+    expertCommentRepository.deleteByIdCustom(id);
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

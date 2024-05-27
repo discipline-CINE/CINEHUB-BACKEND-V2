@@ -68,6 +68,21 @@ public class ActorService {
     return actorRepository.save(actorDto.toEntity()).getId();
   }
 
+  @Transactional
+  public Actor update(Long id, ActorDto actorDto){
+    Actor tmpActor = actorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당하는 에러가 없습니다."));
+
+    String username = tmpActor.getUsername();
+    UserEntity user = tmpActor.getUser();
+
+    Actor actor = actorDto.toEntity();
+    actor.setId(id);
+    actor.setUsername(username);
+    actor.setUser(user);
+    return actorRepository.save(actor);
+  }
+
   //모든 배우 조회
 
   public List<AllActorDto> findAllActors(){
@@ -181,7 +196,9 @@ public class ActorService {
 
   // 배우 댓글 저장
   public void postComment(ActorComment actorComment){
-    actorCommentRepository.save(actorComment);
+    ActorComment savedComment = actorCommentRepository.save(actorComment);
+    savedComment.setAId(savedComment.getId());
+    actorCommentRepository.save(savedComment);
   }
 
   public List<Actor> searchActorsByName(String keyword) {
@@ -192,5 +209,10 @@ public class ActorService {
     return queryFactory.selectFrom(qActor)
             .where(predicate)
             .fetch();
+  }
+
+  // id로 댓글 삭제
+  public void deleteCommentById(Long id){
+    actorCommentRepository.deleteByIdCustom(id);
   }
 }

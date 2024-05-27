@@ -57,9 +57,7 @@ public class ActorController {
 
   // 배우 수정
   @PutMapping("/update-actor/{id}")
-  public Optional<Actor> updateActorById(@PathVariable Long id, ActorRequest actorRequest){
-    Optional<Actor> actor = getActorById(id);
-
+  public Actor updateActorById(@PathVariable Long id, ActorRequest actorRequest){
     String name = actorRequest.getName();
     String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
@@ -81,9 +79,7 @@ public class ActorController {
             .sns(sns)
             .thumbnailId(thumbnailId)
             .build();
-    actorService.save(actorDto);
-
-    return actor;
+    return actorService.update(id ,actorDto);
   }
 
 //  배우 등록
@@ -130,12 +126,19 @@ public class ActorController {
 
   // 댓글 등록
   @PostMapping("/post-comment")
-  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment){
+  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment, String username){
     Actor actor = actorService.findById(actorId).orElseThrow(
             () -> new RuntimeException("해당하는 유저가 없습니다.")
     );
-    actorService.postComment(new ActorComment(actor, comment));
+    actorService.postComment(new ActorComment(actor, comment, username));
     return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  // 댓글 삭제
+  @DeleteMapping("/comments/{id}")
+  public ResponseEntity<HttpStatus> deleteComment(@PathVariable Long id){
+    actorService.deleteCommentById(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/search-actors/{keyword}")
@@ -147,5 +150,17 @@ public class ActorController {
   @DeleteMapping("/delete-actor/{username}")
   public void deleteActorByUsername(@PathVariable String username){
     actorService.deleteByUsername(username);
+  }
+
+  @GetMapping("/check/{username}")
+  public String checkActorByUsername(@PathVariable String username){
+    UserEntity user = userService.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("해당하는 유저가 없습니다."));
+    if(user.getActor() == null){
+      return "등록한 글이 없습니다";
+    }
+    else {
+      return user.getActor().getId().toString();
+    }
   }
 }
