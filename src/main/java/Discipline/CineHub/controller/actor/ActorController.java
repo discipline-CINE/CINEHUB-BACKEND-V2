@@ -6,6 +6,7 @@ import Discipline.CineHub.dto.actor.ThumbnailDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.ActorComment;
+import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
 import Discipline.CineHub.service.actor.StorageService;
@@ -32,6 +33,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/actor")
 public class ActorController {
+  @Autowired
+  private ActorRepository actorRepository;
+
   private final ActorService actorService;
   private StorageService service;
   private UserService userService;
@@ -41,6 +45,11 @@ public class ActorController {
     this.actorService = actorService;
     this.service = service;
     this.userService = userService;
+  }
+
+  @PostMapping("/imgs")
+  public String deleteImgs(String url){
+    return service.deleteFile(url);
   }
 
   // 배우 삭제
@@ -58,6 +67,11 @@ public class ActorController {
   // 배우 수정
   @PutMapping("/update-actor/{id}")
   public Actor updateActorById(@PathVariable Long id, ActorRequest actorRequest){
+    Actor actor = actorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당 ID의 유저가 없습니다."));
+
+    URL imgUrl = actor.getThumbnailId();
+
     String name = actorRequest.getName();
     String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
@@ -79,7 +93,8 @@ public class ActorController {
             .sns(sns)
             .thumbnailId(thumbnailId)
             .build();
-    return actorService.update(id ,actorDto);
+
+    return actorService.update(id ,actorDto, imgUrl);
   }
 
 //  배우 등록

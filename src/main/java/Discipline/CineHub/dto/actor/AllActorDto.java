@@ -26,10 +26,10 @@ public class AllActorDto {
   Double weight;
   URL thumbnailId;
   String username;
-  List<String> actorComments;
+  List<DetailCommentDto> actorComments;
   List<RecommendationResponse> recommendationUrls;
 
-  public AllActorDto(Long id, String content, String sns, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username, List<RecommendationResponse> recommendationUrls, List<String> actorComments) {
+  public AllActorDto(Long id, String content, String sns, String name, String gender, Integer birth, Double height, Double weight, URL thumbnailId, String username, List<RecommendationResponse> recommendationUrls, List<DetailCommentDto> actorComments) {
     this.id = id;
     this.content = content;
     this.sns = sns;
