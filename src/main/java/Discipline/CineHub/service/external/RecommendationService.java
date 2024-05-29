@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class RecommendationService {
 
-    private final String s3_base_url = "https://discipline-actor.s3.ap-northeast-2.amazonaws.com";
+    private final String s3_base_url_male = "https://discipline-actor-male.s3.ap-northeast-2.amazonaws.com";
+    private final String s3_base_url_female = "https://discipline-actor-female.s3.ap-northeast-2.amazonaws.com";
     private final RecommendationRepository recommendationRepository;
 
 

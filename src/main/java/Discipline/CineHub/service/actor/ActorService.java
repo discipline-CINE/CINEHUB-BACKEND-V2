@@ -165,7 +165,8 @@ public class ActorService {
 
     // Actor의 thumbnailId로 추천 목록 조회
     URL thumbnailUrl = actor.getThumbnailId();
-    String thumbnailFileName = thumbnailUrl.toString().replace("https://discipline-actor.s3.ap-northeast-2.amazonaws.com/", "");
+    String thumbnailFileNameString = thumbnailUrl.toString();
+    String thumbnailFileName = thumbnailFileNameString.replaceAll("https://.*?\\.com/", "");
 
     List<RecommendationEntity> recommendations = recommendationRepository.findByInputImage(thumbnailFileName);
     
