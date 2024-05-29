@@ -48,7 +48,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "https://discipline-cinehub.vercel.app"));
+            config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "https://discipline-cinehub.vercel.app", "https://cinehub-discipline.vercel.app"));
             config.setAllowCredentials(true);
             return config;
         };
