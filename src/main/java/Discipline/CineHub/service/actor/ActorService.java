@@ -3,6 +3,7 @@ package Discipline.CineHub.service.actor;
 import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.dto.actor.ActorRecommendationDto;
 import Discipline.CineHub.dto.actor.AllActorDto;
+import Discipline.CineHub.dto.actor.DetailCommentDto;
 import Discipline.CineHub.dto.external.RecommendationDto;
 import Discipline.CineHub.dto.external.RecommendationResponse;
 import Discipline.CineHub.entity.UserEntity;
@@ -37,6 +38,9 @@ import java.util.stream.Collectors;
 @Service
 public class ActorService {
   @Autowired
+  StorageService service;
+
+  @Autowired
   private JPAQueryFactory queryFactory;
 
   @Autowired
@@ -69,7 +73,7 @@ public class ActorService {
   }
 
   @Transactional
-  public Actor update(Long id, ActorDto actorDto){
+  public Actor update(Long id, ActorDto actorDto, URL url){
     Actor tmpActor = actorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("해당하는 에러가 없습니다."));
 
@@ -80,6 +84,9 @@ public class ActorService {
     actor.setId(id);
     actor.setUsername(username);
     actor.setUser(user);
+
+    service.deleteFile(extractFileName(url.toString()));
+
     return actorRepository.save(actor);
   }
 
@@ -88,13 +95,16 @@ public class ActorService {
   public List<AllActorDto> findAllActors(){
     List<Actor> actors = actorRepository.findAll();
     List<AllActorDto> allActorDtos = new ArrayList<>();
-    List<String> comments = new ArrayList<>();
+    List<DetailCommentDto> comments = new ArrayList<>();
 
     for(Actor actor : actors){
 
       List<ActorComment> actorComments = actor.getActorComments();
       for(ActorComment ac : actorComments){
-        comments.add(ac.getContent());
+        DetailCommentDto dto = new DetailCommentDto(
+          ac.getId(), ac.getContent(), ac.getUsername()
+        );
+        comments.add(dto);
       }
 
       AllActorDto allActorDto = new AllActorDto(actor.getId(), actor.getContent(), actor.getSns(),
@@ -179,9 +189,14 @@ public class ActorService {
             })
             .collect(Collectors.toList());
 
-    List<String> comments = new ArrayList<>();
+    List<DetailCommentDto> comments = new ArrayList<>();
     for(ActorComment ac : actor.getActorComments()){
-      comments.add(ac.getContent());
+      DetailCommentDto dto = new DetailCommentDto(
+              ac.getId(),
+              ac.getContent(),
+              ac.getUsername()
+      );
+      comments.add(dto);
     }
 
     // Actor 정보와 추천 목록을 AllActorDto에 설정
@@ -214,5 +229,14 @@ public class ActorService {
   // id로 댓글 삭제
   public void deleteCommentById(Long id){
     actorCommentRepository.deleteByIdCustom(id);
+  }
+
+  public String extractFileName(String url) {
+    if (url == null || url.isEmpty()) {
+      return "";
+    }
+    // URL에서 파일 이름 추출
+    String[] parts = url.split("/");
+    return parts[parts.length - 1];
   }
 }
