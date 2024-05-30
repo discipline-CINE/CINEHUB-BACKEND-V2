@@ -100,8 +100,11 @@ public class ExpertBoardService {
 
   @Transactional
   public List<ReservationDto> checkReservation(Long expertBoardId){
-    Optional<ExpertBoard> board = expertBoardRepository.findById(expertBoardId);
-    List<Reservation> reservations = board.get().getReservations();
+    ExpertBoard board = expertBoardRepository.findById(expertBoardId)
+            .orElseThrow(() -> new RuntimeException("Reservation not found for id: + reservationId"));
+
+
+    List<Reservation> reservations = board.getReservations();
     List<ReservationDto> reservationDtos = new ArrayList<>();
 
     for(Reservation reservation : reservations){

@@ -45,15 +45,14 @@ public class MyPageService {
     return reservationService.checkComplete(user.get());
   }
 
-  public String expertComment(ExpertCommentDto expertCommentDto){
+  public String expertComment(ExpertCommentDto expertCommentDto, Long resId){
     ExpertComment expertComment = new ExpertComment();
 
     expertComment.setComment(expertCommentDto.getComment());
     expertComment.setExpertBoard(expertCommentDto.getExpertBoard());
     expertComment.setUser(expertCommentDto.getUser());
 
-    ExpertComment savedExpertComment = expertCommentRepository.save(expertComment);
-
+    reservationService.completeReview(resId);
 
     return expertCommentDto.getComment();
   }
