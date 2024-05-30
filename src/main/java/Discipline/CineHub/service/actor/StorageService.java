@@ -24,6 +24,12 @@ public class StorageService {
   @Value("${aws.s3.bucketName}")
   private String bucketName;
 
+  @Value("discipline-actor-male")
+  private String bucketNameMale;
+
+  @Value("discipline-actor-female")
+  private String bucketNameFemale;
+
   private AmazonS3 s3Client;
 
   @Autowired
@@ -36,6 +42,30 @@ public class StorageService {
     String tmpName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
     String fileName = createFileName(tmpName);
     s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+    fileObj.delete();
+
+    URL url = s3Client.getUrl(bucketName, fileName);
+
+    return url;
+  }
+
+  public URL uploadFileMale(MultipartFile file) {
+    File fileObj = convertMultiPartFileToFile(file);
+    String tmpName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+    String fileName = createFileName(tmpName);
+    s3Client.putObject(new PutObjectRequest(bucketNameMale, fileName, fileObj));
+    fileObj.delete();
+
+    URL url = s3Client.getUrl(bucketName, fileName);
+
+    return url;
+  }
+
+  public URL uploadFileFemale(MultipartFile file) {
+    File fileObj = convertMultiPartFileToFile(file);
+    String tmpName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+    String fileName = createFileName(tmpName);
+    s3Client.putObject(new PutObjectRequest(bucketNameFemale, fileName, fileObj));
     fileObj.delete();
 
     URL url = s3Client.getUrl(bucketName, fileName);

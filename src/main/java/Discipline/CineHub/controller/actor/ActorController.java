@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -39,6 +40,8 @@ public class ActorController {
   private final ActorService actorService;
   private StorageService service;
   private UserService userService;
+
+
 
   @Autowired
   public ActorController(ActorService actorService, StorageService service, UserService userService) {
@@ -83,6 +86,14 @@ public class ActorController {
 
     URL thumbnailId = service.uploadFile(file);
 
+    if (Objects.equals(gender, "MALE")) {
+      service.uploadFileMale(file);
+    }
+
+    else if (Objects.equals(gender, "FEMALE")) {
+      service.uploadFileFemale(file);
+    }
+
     ActorDto actorDto = ActorDto.builder()
             .name(name)
             .gender(gender)
@@ -100,7 +111,7 @@ public class ActorController {
 //  배우 등록
   @Transactional
   @PostMapping("/upload")
-  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException{
+  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException {
     String name = actorRequest.getName();
     String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
@@ -111,6 +122,14 @@ public class ActorController {
     MultipartFile file = actorRequest.getFile();
 
     URL thumbnailId = service.uploadFile(file);
+
+    if (Objects.equals(gender, "MALE")) {
+      service.uploadFileMale(file);
+    }
+
+    else if (Objects.equals(gender, "FEMALE")) {
+      service.uploadFileFemale(file);
+    }
 
     ActorDto actorDto = ActorDto.builder()
             .name(name)
