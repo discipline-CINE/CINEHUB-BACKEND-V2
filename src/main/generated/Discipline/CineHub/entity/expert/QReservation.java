@@ -36,6 +36,8 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final DatePath<java.time.LocalDate> reservationDate = createDate("reservationDate", java.time.LocalDate.class);
 
+    public final BooleanPath review = createBoolean("review");
+
     public final Discipline.CineHub.entity.QUserEntity user;
 
     public QReservation(String variable) {

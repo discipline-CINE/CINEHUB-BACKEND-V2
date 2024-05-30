@@ -9,11 +9,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ExpertBoardIdTitleUsername {
   Long id;
+  Long resId;
   String title;
   String username;
+  Boolean review;
 
-  public ExpertBoardIdTitleUsername(Long id, String title, String username) {
+  public ExpertBoardIdTitleUsername(Long id, Long resId,String title, String username) {
     this.id = id;
+    this.resId = resId;
     this.title = title;
     this.username = username;
   }

@@ -87,26 +87,18 @@ public class MyPageController {
   // 마이페이지 : 일반 - 예약 조회
   @GetMapping("/check-reservation-user/{username}")
   public List<ReservationDtoByUser> checkReservationByUser(@PathVariable("username") String username){
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if (authentication == null || authentication.getPrincipal() == null) {
-//      new RuntimeException("마이페이지 오류입니다.");
-//    }
     return myPageService.checkReservationByUser(username);
   }
 
   // 완료된 전문가 서비스 조회 - 의뢰인
   @GetMapping("/check-complete-service/{username}")
   public List<ExpertBoardIdTitleUsername> checkCompleteService(@PathVariable("username") String username){
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if (authentication == null || authentication.getPrincipal() == null) {
-//      new RuntimeException("마이페이지 오류입니다.");
-//    }
     return myPageService.checkComplete(username);
   }
 
   // 댓글 등록 - 의뢰인
   @PostMapping("/expert-comment/{username}")
-  public String expertComment(@PathVariable("username") String username,String comment, String expertBoardId){
+  public String expertComment(@PathVariable("username") String username,String comment, String expertBoardId, String resId){
     ExpertCommentDto expertCommentDto = new ExpertCommentDto();
 
     ExpertBoard expertBoard = expertBoardService.getById(Long.parseLong(expertBoardId));
@@ -116,7 +108,7 @@ public class MyPageController {
     expertCommentDto.setExpertBoard(expertBoard);
     expertCommentDto.setUser(user.get());
 
-    return myPageService.expertComment(expertCommentDto);
+    return myPageService.expertComment(expertCommentDto, Long.parseLong(resId));
   }
 
   @DeleteMapping("/expert-comment/{id}")

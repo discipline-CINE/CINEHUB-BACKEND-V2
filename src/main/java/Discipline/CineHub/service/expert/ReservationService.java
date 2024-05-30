@@ -83,13 +83,23 @@ public class ReservationService {
       if(reservation.getConfirm().equals(ConfirmType.COMPLETE)){
         ExpertBoardIdTitleUsername tmp = new ExpertBoardIdTitleUsername(
                 reservation.getExpertBoard().getId(),
+                reservation.getId(),
                 reservation.getExpertBoard().getTitle(),
                 reservation.getUser().getUsername()
         );
+        tmp.setReview(reservation.getReview());
         res.add(tmp);
       }
     }
     return res;
+  }
+
+  @Transactional
+  public void completeReview(Long resId){
+    Reservation reservation = reservationRepository.findById(resId)
+            .orElseThrow(() -> new RuntimeException("해당 예약을 찾을 수 없습니다."));
+
+    reservation.setReview(true);
   }
 
 }

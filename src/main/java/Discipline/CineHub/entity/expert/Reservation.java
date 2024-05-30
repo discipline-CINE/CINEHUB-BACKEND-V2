@@ -23,6 +23,8 @@ public class Reservation {
   String email;
   LocalDate reservationDate;
   ConfirmType confirm;
+  // 리뷰가 써져있는지 확인
+  Boolean review = false;
 
   @JsonBackReference
   @ManyToOne
