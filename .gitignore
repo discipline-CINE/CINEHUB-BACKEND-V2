@@ -6,6 +6,9 @@ out
 gen
 build
 rebel.xml 
+*.yaml
+*.yml
+*.sql
 
 # Compliled files
 /target/

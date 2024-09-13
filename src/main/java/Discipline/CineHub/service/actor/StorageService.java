@@ -90,6 +90,16 @@ public class StorageService {
     return fileName + " removed ...";
   }
 
+  public String deleteFileMale(String fileName) {
+    s3Client.deleteObject(bucketNameMale, fileName);
+    return fileName + " removed ...";
+  }
+
+  public String deleteFileFemale(String fileName) {
+    s3Client.deleteObject(bucketNameFemale, fileName);
+    return fileName + " removed ...";
+  }
+
   private File convertMultiPartFileToFile(MultipartFile file) {
     File convertedFile = new File(file.getOriginalFilename());
     try (FileOutputStream fos = new FileOutputStream(convertedFile)) {

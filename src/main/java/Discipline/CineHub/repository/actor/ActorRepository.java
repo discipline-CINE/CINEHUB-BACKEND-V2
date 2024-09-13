@@ -39,6 +39,8 @@ public interface ActorRepository extends
 
   Optional<Actor> findById(Long id);
 
+  Optional<Actor> findByUsername(String username);
+
   Actor findByUser_Username(String username);
   Actor findByThumbnailId(URL thumbnailId); // 새로운 메소드 추가
 

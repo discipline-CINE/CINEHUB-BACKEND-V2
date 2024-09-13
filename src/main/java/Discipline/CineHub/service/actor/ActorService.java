@@ -9,8 +9,10 @@ import Discipline.CineHub.dto.external.RecommendationResponse;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.ActorComment;
+import Discipline.CineHub.entity.actor.GenderType;
 import Discipline.CineHub.entity.actor.QActor;
 import Discipline.CineHub.entity.external.RecommendationEntity;
+import Discipline.CineHub.repository.UserRepository;
 import Discipline.CineHub.repository.actor.ActorCommentRepository;
 import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.repository.external.RecommendationRepository;
@@ -38,6 +40,9 @@ import java.util.stream.Collectors;
 @Service
 public class ActorService {
   @Autowired
+  UserRepository userRepository;
+
+  @Autowired
   StorageService service;
 
   @Autowired
@@ -57,6 +62,19 @@ public class ActorService {
 
   @Transactional
   public void deleteByUsername(String username){
+    Actor actor = actorRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("해당하는 배우가 없습니다."));
+    URL url = actor.getThumbnailId();
+    
+    service.deleteFile(extractFileName(url.toString()));
+    
+    if(actor.getGender().equals(GenderType.MALE)){
+      service.deleteFileMale(extractFileName(url.toString()));
+    } else if (actor.getGender().equals(GenderType.FEMALE)) {
+      service.deleteFileFemale(extractFileName(url.toString()));
+    }
+
+    userRepository.deleteByActor(actor);
     actorRepository.deleteActorByUsername(username);
   }
 

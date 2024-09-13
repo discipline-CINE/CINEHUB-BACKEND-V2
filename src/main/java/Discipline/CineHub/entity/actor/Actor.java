@@ -41,7 +41,7 @@ public class Actor{
   @Setter private String username;
 
   @Setter
-  @OneToOne(mappedBy = "actor")
+  @OneToOne(mappedBy = "actor", cascade = CascadeType.REMOVE)
   @JsonManagedReference
   private UserEntity user;
 
