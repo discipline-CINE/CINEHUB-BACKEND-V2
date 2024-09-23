@@ -10,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @ToString
@@ -32,7 +29,7 @@ import java.util.Set;
 public class Actor{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;  //id(pk)
+  @Setter private Long id;  //id(pk)
   @Setter @Column(nullable = false) private String name;
   @Setter @Column(nullable = false)  private String gender;
   @Setter @Column(nullable = false) private Integer birth;
@@ -44,14 +41,14 @@ public class Actor{
   @Setter private String username;
 
   @Setter
-  @OneToOne(mappedBy = "actor")
+  @OneToOne(mappedBy = "actor", cascade = CascadeType.REMOVE)
   @JsonManagedReference
   private UserEntity user;
 
   @OrderBy("id")
   @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @ToString.Exclude //circular referencing 이슈 방지
-  private final Set<ActorComment> actorComments = new LinkedHashSet<>();
+  private final List<ActorComment> actorComments = new ArrayList<>();
 
   @Builder
   public Actor(String name, String gender, Integer birth, Double height, Double weight, String content, String sns, URL thumbnailId) {

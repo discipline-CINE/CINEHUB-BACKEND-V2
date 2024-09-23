@@ -58,11 +58,27 @@ public class ChatRoomController {
         }
     }
 
+    @GetMapping("/room/{roomNumber}")
+    public ResponseEntity<ChatRoomWithMessagesDto> getRoom(@PathVariable int roomNumber) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomNumber(roomNumber);
+
+        if (optionalChatRoom.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ChatRoom foundChatRoom = optionalChatRoom.get();
+        List<ChatMessageResponseDto> chatMessage = chatMessageService.findRoom(foundChatRoom.getRoomNumber());
+        ChatRoom chatRoom = optionalChatRoom.get();
+        ChatRoomWithMessagesDto chatRoomWithMessagesDto = new ChatRoomWithMessagesDto(chatRoom, chatMessage);
+
+        return ResponseEntity.ok(chatRoomWithMessagesDto);
+    }
+
 
     //전체 조회
-    @GetMapping("/list")
-    public ResponseEntity<List<ChatRoomResponseDto>> findAll() {
-        List<ChatRoomResponseDto> roomResponseDtos = chatRoomService.findByList();
+    @GetMapping("/list/{username}")
+    public ResponseEntity<List<ChatRoomResponseDto>> findByUsername(@PathVariable String username) {
+        List<ChatRoomResponseDto> roomResponseDtos = chatRoomService.findByUsername(username);
         return ResponseEntity.ok(roomResponseDtos);
     }
 

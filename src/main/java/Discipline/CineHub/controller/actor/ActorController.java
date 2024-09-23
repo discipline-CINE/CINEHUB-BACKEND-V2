@@ -6,6 +6,7 @@ import Discipline.CineHub.dto.actor.ThumbnailDto;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.ActorComment;
+import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.request.actor.ActorRequest;
 import Discipline.CineHub.service.actor.ActorService;
 import Discipline.CineHub.service.actor.StorageService;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -32,15 +34,25 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/actor")
 public class ActorController {
+  @Autowired
+  private ActorRepository actorRepository;
+
   private final ActorService actorService;
   private StorageService service;
   private UserService userService;
+
+
 
   @Autowired
   public ActorController(ActorService actorService, StorageService service, UserService userService) {
     this.actorService = actorService;
     this.service = service;
     this.userService = userService;
+  }
+
+  @PostMapping("/imgs")
+  public String deleteImgs(String url){
+    return service.deleteFile(url);
   }
 
   // 배우 삭제
@@ -57,8 +69,11 @@ public class ActorController {
 
   // 배우 수정
   @PutMapping("/update-actor/{id}")
-  public Optional<Actor> updateActorById(@PathVariable Long id, ActorRequest actorRequest){
-    Optional<Actor> actor = getActorById(id);
+  public Actor updateActorById(@PathVariable Long id, ActorRequest actorRequest){
+    Actor actor = actorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당 ID의 유저가 없습니다."));
+
+    URL imgUrl = actor.getThumbnailId();
 
     String name = actorRequest.getName();
     String gender = actorRequest.getGender();
@@ -70,6 +85,14 @@ public class ActorController {
     MultipartFile file = actorRequest.getFile();
 
     URL thumbnailId = service.uploadFile(file);
+
+    if (Objects.equals(gender, "MALE")) {
+      service.uploadFileMale(file);
+    }
+
+    else if (Objects.equals(gender, "FEMALE")) {
+      service.uploadFileFemale(file);
+    }
 
     ActorDto actorDto = ActorDto.builder()
             .name(name)
@@ -81,15 +104,14 @@ public class ActorController {
             .sns(sns)
             .thumbnailId(thumbnailId)
             .build();
-    actorService.save(actorDto);
 
-    return actor;
+    return actorService.update(id ,actorDto, imgUrl);
   }
 
 //  배우 등록
   @Transactional
   @PostMapping("/upload")
-  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException{
+  public URL saveFormRequests(String username,ActorRequest actorRequest) throws IOException {
     String name = actorRequest.getName();
     String gender = actorRequest.getGender();
     Integer birth = actorRequest.getBirth();
@@ -100,6 +122,14 @@ public class ActorController {
     MultipartFile file = actorRequest.getFile();
 
     URL thumbnailId = service.uploadFile(file);
+
+    if (Objects.equals(gender, "MALE")) {
+      service.uploadFileMale(file);
+    }
+
+    else if (Objects.equals(gender, "FEMALE")) {
+      service.uploadFileFemale(file);
+    }
 
     ActorDto actorDto = ActorDto.builder()
             .name(name)
@@ -130,17 +160,41 @@ public class ActorController {
 
   // 댓글 등록
   @PostMapping("/post-comment")
-  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment){
+  public ResponseEntity<HttpStatus> postComment(Long actorId, String comment, String username){
     Actor actor = actorService.findById(actorId).orElseThrow(
             () -> new RuntimeException("해당하는 유저가 없습니다.")
     );
-    actorService.postComment(new ActorComment(actor, comment));
+    actorService.postComment(new ActorComment(actor, comment, username));
     return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  // 댓글 삭제
+  @DeleteMapping("/comments/{id}")
+  public ResponseEntity<HttpStatus> deleteComment(@PathVariable Long id){
+    actorService.deleteCommentById(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/search-actors/{keyword}")
   public ResponseEntity<List<Actor>> searchActors(@PathVariable String keyword) {
     List<Actor> actors = actorService.searchActorsByName(keyword);
     return ResponseEntity.ok(actors);
+  }
+
+  @DeleteMapping("/delete-actor/{username}")
+  public void deleteActorByUsername(@PathVariable String username){
+    actorService.deleteByUsername(username);
+  }
+
+  @GetMapping("/check/{username}")
+  public String checkActorByUsername(@PathVariable String username){
+    UserEntity user = userService.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("해당하는 유저가 없습니다."));
+    if(user.getActor() == null){
+      return "등록한 글이 없습니다";
+    }
+    else {
+      return user.getActor().getId().toString();
+    }
   }
 }

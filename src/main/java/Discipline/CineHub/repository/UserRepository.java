@@ -24,4 +24,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, Queryds
     Optional<UserEntity> findByPhonenumber(String phonenumber);
 
     Optional<UserEntity> findById(Long id);
+
+    @Transactional
+    void deleteByActor(Actor actor);
 }

@@ -3,13 +3,16 @@ package Discipline.CineHub.service.actor;
 import Discipline.CineHub.dto.actor.ActorDto;
 import Discipline.CineHub.dto.actor.ActorRecommendationDto;
 import Discipline.CineHub.dto.actor.AllActorDto;
+import Discipline.CineHub.dto.actor.DetailCommentDto;
 import Discipline.CineHub.dto.external.RecommendationDto;
 import Discipline.CineHub.dto.external.RecommendationResponse;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
 import Discipline.CineHub.entity.actor.ActorComment;
+import Discipline.CineHub.entity.actor.GenderType;
 import Discipline.CineHub.entity.actor.QActor;
 import Discipline.CineHub.entity.external.RecommendationEntity;
+import Discipline.CineHub.repository.UserRepository;
 import Discipline.CineHub.repository.actor.ActorCommentRepository;
 import Discipline.CineHub.repository.actor.ActorRepository;
 import Discipline.CineHub.repository.external.RecommendationRepository;
@@ -37,6 +40,12 @@ import java.util.stream.Collectors;
 @Service
 public class ActorService {
   @Autowired
+  UserRepository userRepository;
+
+  @Autowired
+  StorageService service;
+
+  @Autowired
   private JPAQueryFactory queryFactory;
 
   @Autowired
@@ -51,6 +60,24 @@ public class ActorService {
   @Autowired
   private RecommendationRepository recommendationRepository;
 
+  @Transactional
+  public void deleteByUsername(String username){
+    Actor actor = actorRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("해당하는 배우가 없습니다."));
+    URL url = actor.getThumbnailId();
+    
+    service.deleteFile(extractFileName(url.toString()));
+    
+    if(actor.getGender().equals(GenderType.MALE)){
+      service.deleteFileMale(extractFileName(url.toString()));
+    } else if (actor.getGender().equals(GenderType.FEMALE)) {
+      service.deleteFileFemale(extractFileName(url.toString()));
+    }
+
+    userRepository.deleteByActor(actor);
+    actorRepository.deleteActorByUsername(username);
+  }
+
   //Id로 배우 삭제
   @Transactional
   public void deleteById(Long id){
@@ -63,19 +90,47 @@ public class ActorService {
     return actorRepository.save(actorDto.toEntity()).getId();
   }
 
+  @Transactional
+  public Actor update(Long id, ActorDto actorDto, URL url){
+    Actor tmpActor = actorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당하는 에러가 없습니다."));
+
+    String username = tmpActor.getUsername();
+    UserEntity user = tmpActor.getUser();
+
+    Actor actor = actorDto.toEntity();
+    actor.setId(id);
+    actor.setUsername(username);
+    actor.setUser(user);
+
+    service.deleteFile(extractFileName(url.toString()));
+
+    return actorRepository.save(actor);
+  }
+
   //모든 배우 조회
 
   public List<AllActorDto> findAllActors(){
     List<Actor> actors = actorRepository.findAll();
     List<AllActorDto> allActorDtos = new ArrayList<>();
+    List<DetailCommentDto> comments = new ArrayList<>();
 
     for(Actor actor : actors){
-      AllActorDto allActorDto = new AllActorDto(actor.getId(),
+
+      List<ActorComment> actorComments = actor.getActorComments();
+      for(ActorComment ac : actorComments){
+        DetailCommentDto dto = new DetailCommentDto(
+          ac.getId(), ac.getContent(), ac.getUsername()
+        );
+        comments.add(dto);
+      }
+
+      AllActorDto allActorDto = new AllActorDto(actor.getId(), actor.getContent(), actor.getSns(),
               actor.getName(), actor.getGender(),
               actor.getBirth(), actor.getHeight(),
               actor.getWeight(), actor.getThumbnailId(),
               actor.getUser().getUsername(),
-              new ArrayList<>()
+              new ArrayList<>(), comments
       );
 
       allActorDtos.add(allActorDto);
@@ -128,7 +183,8 @@ public class ActorService {
 
     // Actor의 thumbnailId로 추천 목록 조회
     URL thumbnailUrl = actor.getThumbnailId();
-    String thumbnailFileName = thumbnailUrl.toString().replace("https://discipline-actor.s3.ap-northeast-2.amazonaws.com/", "");
+    String thumbnailFileNameString = thumbnailUrl.toString();
+    String thumbnailFileName = thumbnailFileNameString.replaceAll("https://.*?\\.com/", "");
 
     List<RecommendationEntity> recommendations = recommendationRepository.findByInputImage(thumbnailFileName);
     
@@ -152,11 +208,21 @@ public class ActorService {
             })
             .collect(Collectors.toList());
 
+    List<DetailCommentDto> comments = new ArrayList<>();
+    for(ActorComment ac : actor.getActorComments()){
+      DetailCommentDto dto = new DetailCommentDto(
+              ac.getId(),
+              ac.getContent(),
+              ac.getUsername()
+      );
+      comments.add(dto);
+    }
+
     // Actor 정보와 추천 목록을 AllActorDto에 설정
     AllActorDto allActorDto = new AllActorDto(
-            actor.getId(), actor.getName(), actor.getGender(),
+            actor.getId(), actor.getContent(), actor.getSns(),actor.getName(), actor.getGender(),
             actor.getBirth(), actor.getHeight(), actor.getWeight(),
-            actor.getThumbnailId(), actor.getUsername(), recommendationResponses
+            actor.getThumbnailId(), actor.getUsername(), recommendationResponses,comments
     );
 
     return allActorDto;
@@ -164,7 +230,9 @@ public class ActorService {
 
   // 배우 댓글 저장
   public void postComment(ActorComment actorComment){
-    actorCommentRepository.save(actorComment);
+    ActorComment savedComment = actorCommentRepository.save(actorComment);
+    savedComment.setAId(savedComment.getId());
+    actorCommentRepository.save(savedComment);
   }
 
   public List<Actor> searchActorsByName(String keyword) {
@@ -175,5 +243,19 @@ public class ActorService {
     return queryFactory.selectFrom(qActor)
             .where(predicate)
             .fetch();
+  }
+
+  // id로 댓글 삭제
+  public void deleteCommentById(Long id){
+    actorCommentRepository.deleteByIdCustom(id);
+  }
+
+  public String extractFileName(String url) {
+    if (url == null || url.isEmpty()) {
+      return "";
+    }
+    // URL에서 파일 이름 추출
+    String[] parts = url.split("/");
+    return parts[parts.length - 1];
   }
 }

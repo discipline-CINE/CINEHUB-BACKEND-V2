@@ -80,7 +80,7 @@ public class UserEntity implements UserDetails {
     )
     private Set<AuthorityEntity> authorities;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     @JsonIgnore
     @ToString.Exclude //circular referencing 이슈 방지

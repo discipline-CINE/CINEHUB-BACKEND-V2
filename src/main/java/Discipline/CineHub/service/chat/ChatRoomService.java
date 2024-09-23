@@ -8,6 +8,7 @@ import Discipline.CineHub.repository.chat.ChatMessageRepository;
 import Discipline.CineHub.repository.chat.ChatRoomRepository;
 import Discipline.CineHub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +26,17 @@ public class ChatRoomService {
 
     //전체 채팅방 목록 조회
     @Transactional(readOnly = true)
-    public List<ChatRoomResponseDto> findByList() {
-        return chatRoomRepository.findAll().stream()
-                .map(chatRoom -> {ChatMessage lastMessage = chatMessageRepository.findTopByRoomNumberOrderByCreatedTimeDesc(chatRoom.getRoomNumber());
-                    if (lastMessage!=null) {
+    public List<ChatRoomResponseDto> findByUsername(String username) {
+        UserEntity member = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+
+        return chatRoomRepository.findByMemberOrOther(member, member).stream()
+                .map(chatRoom -> {
+                    ChatMessage lastMessage = chatMessageRepository.findTopByRoomNumberOrderByCreatedTimeDesc(chatRoom.getRoomNumber());
+                    if (lastMessage != null) {
                         return new ChatRoomResponseDto(chatRoom, lastMessage.getMsg(), lastMessage.getCreatedTime().format(DateTimeFormatter.ISO_DATE_TIME));
-                    }
-                    else {
-                        return new ChatRoomResponseDto(chatRoom, "이 채팅방에 아직 메시지가 없습니다","00:00:00");
+                    } else {
+                        return new ChatRoomResponseDto(chatRoom, "이 채팅방에 아직 메시지가 없습니다", "00:00:00");
                     }
                 })
                 .collect(Collectors.toList());

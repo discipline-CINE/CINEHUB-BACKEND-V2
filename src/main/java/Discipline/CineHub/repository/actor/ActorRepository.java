@@ -5,6 +5,8 @@ import Discipline.CineHub.entity.actor.QActor;
 import Discipline.CineHub.entity.external.RecommendationEntity;
 import com.querydsl.core.types.dsl.StringExpression;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
@@ -37,6 +39,12 @@ public interface ActorRepository extends
 
   Optional<Actor> findById(Long id);
 
+  Optional<Actor> findByUsername(String username);
+
   Actor findByUser_Username(String username);
   Actor findByThumbnailId(URL thumbnailId); // 새로운 메소드 추가
+
+  @Modifying
+  @Query("DELETE FROM Actor a WHERE a.username = :username")
+  void deleteActorByUsername(String username);
 }

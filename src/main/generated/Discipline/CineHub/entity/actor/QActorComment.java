@@ -24,9 +24,13 @@ public class QActorComment extends EntityPathBase<ActorComment> {
 
     public final QActor actor;
 
+    public final NumberPath<Long> aId = createNumber("aId", Long.class);
+
     public final StringPath content = createString("content");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath username = createString("username");
 
     public QActorComment(String variable) {
         this(ActorComment.class, forVariable(variable), INITS);

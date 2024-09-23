@@ -1,6 +1,5 @@
 package Discipline.CineHub.service.user;
 
-import Discipline.CineHub.controller.actor.ActorController;
 import Discipline.CineHub.entity.AuthorityEntity;
 import Discipline.CineHub.entity.UserEntity;
 import Discipline.CineHub.entity.actor.Actor;
@@ -13,11 +12,9 @@ import Discipline.CineHub.exception.ExceptionCode;
 import Discipline.CineHub.service.actor.ActorService;
 import Discipline.CineHub.service.authentication.MailService;
 import Discipline.CineHub.service.redis.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -163,16 +160,6 @@ public class UserService {
       actor.setUsername(userEntity.getUsername());
 
       return userEntity.getActor().getName();
-    }
-
-//    @Transactional
-    public void changeToExpert(String username){
-      System.out.println(username);
-      UserEntity user = userRepository.findByUsername(username)
-              .orElseThrow(
-                      () -> new RuntimeException("해당 유저가 없습니다.")
-              );
-      user.setRole("EXPERT");
     }
 
     public String checkMyRole(String username){

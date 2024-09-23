@@ -19,6 +19,8 @@ models = [
 
 metrics = ["cosine", "euclidean", "euclidean_l2"]
 
+# S3 기본 URL
+s3_base_url = 'https://discipline-actor.s3.ap-northeast-2.amazonaws.com'
 
 def process_image(input_img_path, images_folder_path, s3_base_url):
     input_img = cv2.imread(input_img_path)
